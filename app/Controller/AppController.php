@@ -31,4 +31,13 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+
+	public $components = array(
+		'SassCompiler.Sass' => array(
+			'sourceFolder'      => 'webroot/sass',              // Where to look for .scss files, (From the APP directory)
+        	'targetFolder'      => 'css',               		// Where to put the generated css (From the webroot directory)
+        	'forceCompiling'    => true,                       // Always recompile
+        	'autoRun'           => true,                       // Check if compilation is necessary, this ignores the CakePHP Debug setting
+        )
+	);
 }
