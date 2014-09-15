@@ -33,6 +33,28 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
 	public $components = array(
+		'Session',
+        'Auth' => array(
+            'loginRedirect' => array(
+                'controller' => 'schedules',
+                'action' => 'index'
+            ),
+            'logoutRedirect' => array(
+                'controller' => 'employers',
+                'action' => 'login',
+                'home'
+            ),
+            'authenticate' => array(
+                'Form' => array(
+                	'fields' => array(
+                		'username' => 'email',
+                		'password' => 'password'
+                	),
+                	'userModel' => 'Employer',
+                    'passwordHasher' => 'Blowfish'
+                )
+            )
+        ),
 		'SassCompiler.Sass' => array(
 			'sourceFolder'      => 'webroot/sass',              // Where to look for .scss files, (From the APP directory)
         	'targetFolder'      => 'css',               		// Where to put the generated css (From the webroot directory)

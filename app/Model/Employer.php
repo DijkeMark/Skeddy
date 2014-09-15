@@ -24,6 +24,7 @@ class Employer extends AppModel {
 		'TimeScheduleItem' => array(
 			'className' => 'TimeScheduleItem',
 			'foreignKey' => 'employer_id'
+		)
 	);
 
 }
