@@ -24,10 +24,9 @@ class EmployersController extends AppController {
 
 		if($this->request->is('post'))
 		{
-			debug($this->Auth->login());
 			if($this->Auth->login())
 			{
-	            return $this->redirect($this->Auth->redirect());
+	            return $this->redirect($this->Auth->redirectUrl());
 	        }
 	        else
 	        {

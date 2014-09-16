@@ -7,6 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class SchedulesController extends AppController {
 
+	public $layoutToUse = 'schedule';
+
 	public function index()
 	{
 		$this->redirect(array('controller' => 'schedules', 'action' => 'overview'));
@@ -14,6 +16,6 @@ class SchedulesController extends AppController {
 
 	public function overview()
 	{
-		
+		$this->layout = $this->layoutToUse;
 	}
 }
