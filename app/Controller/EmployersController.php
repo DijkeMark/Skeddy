@@ -14,7 +14,7 @@ class EmployersController extends AppController {
 	{
 		parent::beforeFilter();
 
-		$this->Auth->allow('login');
+		$this->Auth->allow('login', 'logout');
 	}
 
 	public function login()
@@ -33,5 +33,14 @@ class EmployersController extends AppController {
                 $this->Session->setFlash('Your username or password was incorrect.');
             }
 		}
+		elseif($this->Auth->loggedIn())
+		{
+			return $this->redirect($this->Auth->redirectUrl());
+		}
+	}
+
+	public function logout()
+	{
+		return $this->redirect($this->Auth->logout());
 	}
 }
