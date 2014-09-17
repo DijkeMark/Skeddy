@@ -3,6 +3,7 @@ var months = new Array('January', 'February', 'March', 'April', 'May', 'June', '
 
 $(document).ready(function()
 {
+	SetupClickHandlers();
 	CreateNewSchedule('weekly');
 });
 
@@ -14,4 +15,17 @@ function CreateNewSchedule(type)
 			schedule = new WeeklySchedule();
 			break;
 	}
-}                
+}
+
+function SetupClickHandlers()
+{
+	$('#topbar #navigation #previous').on('click', function()
+	{
+		schedule.Previous();
+	});
+
+	$('#topbar #navigation #next').on('click', function()
+	{
+		schedule.Next();
+	});
+}
