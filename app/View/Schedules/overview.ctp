@@ -57,37 +57,37 @@
 			</div>
 			<div id='days'>
 				<div class="day-spacing left"></div>
-				<div class="day left" id='monday'>
+				<div class="day left" id='0'>
 					<div class="day-indicator">Mon 1</div>
 					<div class='day-schedule'></div>
 				</div>
 				<div class="day-spacing left"></div>
-				<div class="day left" id='tuesday'>
+				<div class="day left" id='1'>
 					<div class="day-indicator">Tue 2</div>
 					<div class='day-schedule'></div>
 				</div>
 				<div class="day-spacing left"></div>
-				<div class="day left" id='wednesday'>
+				<div class="day left" id='2'>
 					<div class="day-indicator">Wed 3</div>
 					<div class='day-schedule'></div>
 				</div>
 				<div class="day-spacing left"></div>
-				<div class="day left" id='thursday'>
+				<div class="day left" id='3'>
 					<div class="day-indicator">Thu 4</div>
 					<div class='day-schedule'></div>
 				</div>
 				<div class="day-spacing left"></div>
-				<div class="day left" id='friday'>
+				<div class="day left" id='4'>
 					<div class="day-indicator">Fri 5</div>
 					<div class='day-schedule'></div>
 				</div>
 				<div class="day-spacing left"></div>
-				<div class="day left" id='saturday'>
+				<div class="day left" id='5'>
 					<div class="day-indicator">Sat 6</div>
 					<div class='day-schedule'></div>
 				</div>
 				<div class="day-spacing left"></div>
-				<div class="day left" id='sunday'>
+				<div class="day left" id='6'>
 					<div class="day-indicator">Sun 7</div>
 					<div class='day-schedule'></div>
 				</div>
