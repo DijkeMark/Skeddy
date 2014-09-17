@@ -9,10 +9,25 @@ function WeeklySchedule()
 WeeklySchedule.prototype.SetupScheduleDate = function()
 {
 	var daysInWeek = new Array();
+	var todayInWeek = false;
 	for(var i = 0; i < 7; i++)
 	{
 		daysInWeek[i] = this.GetDayOfWeek(i, this.weekOffset);
 		$('#schedule .day#' + i + ' .day-indicator').html(days[i] + ' ' + daysInWeek[i].getDate());
+
+		var today = new Date();
+		if(daysInWeek[i].getDate() == today.getDate()
+			&& daysInWeek[i].getMonth() == today.getMonth()
+			&& daysInWeek[i].getFullYear() == today.getFullYear())
+		{
+			$('#schedule .day#' + i + ' .day-indicator').addClass('today');
+			todayInWeek = true;
+		}
+	}
+
+	if(!todayInWeek)
+	{
+		$('#schedule .day .day-indicator').removeClass('today');
 	}
 
 	var year = daysInWeek[0].getFullYear();
