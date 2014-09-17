@@ -63,31 +63,50 @@
 			}
 		}
 
-		#days {
-			margin-left:70px;
+		#schedule {
+			width:100%;
+			position:relative;
 
-			.day {
-				width:12%;
-				height:inherit;
+			#hour-indicators {
+				padding-top:40px;
+				width:100%;
+				position:absolute;
+				top:0px;
+				z-index:-1;
 
-				.day-indicator {
-					height:40px;
-					margin-bottom:20px;
-					line-height:40px;
-					font-size:20px;
-					text-align:center;
-				}
-
-				.day-schedule {
-					height:960px;
-					background:$purple;
-					@include border-radius(5px);
+				.hour-indicator {
+					margin:0px 0px 20px 95px;
+					height:19px;
+					border-bottom:1px solid $grey5;
 				}
 			}
 
-			.day-spacing {
-				width:2.1%;
-				height:1px;
+			#days {
+				margin-left:70px;
+
+				.day {
+					width:12%;
+					height:inherit;
+
+					.day-indicator {
+						height:40px;
+						margin-bottom:20px;
+						line-height:40px;
+						font-size:20px;
+						text-align:center;
+					}
+
+					.day-schedule {
+						height:960px;
+						background:$purple;
+						@include border-radius(5px);
+					}
+				}
+
+				.day-spacing {
+					width:2.1%;
+					height:1px;
+				}
 			}
 		}
 	}
