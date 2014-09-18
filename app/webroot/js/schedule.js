@@ -29,4 +29,14 @@ function SetupClickHandlers()
 	{
 		schedule.Next();
 	});
+
+	$('#sidebar	#top #icon').on('click', function()
+	{
+		$('#sidebar').toggleClass('collapsed');
+	});
+
+	$('#sidebar	#top #close').on('click', function()
+	{
+		$('#sidebar').addClass('collapsed');
+	});
 }

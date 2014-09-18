@@ -4,9 +4,12 @@
 }
 
 body {
-	background:$background;
+	height:100%;
 	font-family:Arial;
 	color:$grey2;
+	position:relative;
+	background:$background;
+	overflow-x:hidden;
 }
 
 .left {
