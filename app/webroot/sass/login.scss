@@ -2,6 +2,10 @@
 @import 'mixins';
 @import 'common';
 
+body {
+	position:static;
+}
+
 #login-container {
 	margin:-125px 0px 0px -200px;
 	padding:20px 40px;
