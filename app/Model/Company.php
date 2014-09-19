@@ -18,5 +18,4 @@ class Company extends AppModel {
 			'foreignKey' => 'company_id'
 		)
 	);
-
 }

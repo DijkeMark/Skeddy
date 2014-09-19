@@ -7,6 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class SchedulesController extends AppController {
 
+	public $uses = array('Employer');
+
 	public $layoutToUse = 'schedule';
 
 	public function index()
@@ -17,5 +19,19 @@ class SchedulesController extends AppController {
 	public function overview()
 	{
 		$this->layout = $this->layoutToUse;
+
+		$data = array();
+		if($this->hasAccess(1))
+		{
+			$data['teamMembers'] = $this->getTeamMembers();
+		}
+
+		$this->set($data);
+	}
+
+	private function getTeamMembers()
+	{
+		$companyId = $this->Session->read('Auth.User.Job.company_id');
+		return $this->Employer->findEmployersByCompanyId($companyId);
 	}
 }

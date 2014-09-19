@@ -66,4 +66,14 @@ class AppController extends Controller {
         	'autoRun'           => true,                       // Check if compilation is necessary, this ignores the CakePHP Debug setting
         )
 	);
+	
+	public function hasAccess($requiredRoleId)
+	{
+		if($requiredRoleId == $this->Session->read('Auth.User.Role.id'))
+		{
+			return true;
+		}
+
+		return false;
+	}
 }

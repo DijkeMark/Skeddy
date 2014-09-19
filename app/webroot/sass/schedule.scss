@@ -160,6 +160,40 @@
 			}
 		}
 	}
+
+	#team-members {
+
+		.team-member {
+			padding:20px 30px 0px 30px;
+			font-size:14px;
+
+			.profile-icon {
+				width:40px;
+				height:40px;
+				overflow:hidden;
+				text-align:center;  
+				@include border-radius(40px);
+
+				.profile-photo {
+					margin:-10px 0px 0px -10px;
+					width:60px;
+					height:60px;
+				}
+			}
+
+			.info {
+				margin-left:50px;
+
+				.name {
+					font-weight:bold;
+				}
+
+				.job-name {
+					margin-top:5px;
+				}
+			}
+		}
+	}
 }
 
 #sidebar.collapsed {

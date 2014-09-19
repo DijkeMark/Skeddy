@@ -99,14 +99,4 @@
 	</div>
 </div>
 
-<div id='sidebar' class='collapsed'>
-	<div id='top'>
-		<div id='icon'>
-			<i class="fa fa-users"></i>
-		</div>
-		<div id='close'>
-			<i class="fa fa-times"></i>
-		</div>
-		<div id='title'>Team members</div>
-	</div>
-</div>
+<?php echo $this->element('sidebar'); ?>

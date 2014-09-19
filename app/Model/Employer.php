@@ -27,4 +27,34 @@ class Employer extends AppModel {
 		)
 	);
 
+	public function findEmployersByCompanyId($companyId)
+	{
+		$results = $this->find('all', array(
+			'contain' => array(
+				'Job' => array(
+					'fields' => array(
+						'id',
+						'name'
+					),
+					'Company' => array(
+						'fields' => array(
+							'id',
+							'name'
+						)
+					)
+				)
+			),
+			'fields' => array(
+				'name',
+				'insertion',
+				'lastname',
+				'profile_photo'
+			),
+			'conditions' => array(
+				'Job.company_id' => $companyId
+			)
+		));
+
+		return $results;
+	}
 }
