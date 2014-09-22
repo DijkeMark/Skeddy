@@ -164,7 +164,7 @@
 	#team-members {
 
 		.team-member {
-			padding:20px 30px 0px 30px;
+			padding:20px 30px;
 			font-size:14px;
 
 			.profile-icon {
@@ -192,11 +192,20 @@
 					margin-top:5px;
 				}
 			}
+
+			&.selected {
+				color:white;
+				background:$purple2;
+			}
+
+			&:hover {
+				cursor:pointer;
+			}
 		}
 	}
-}
 
-#sidebar.collapsed {
+	&.collapsed {
 	right:-238px;
 	@include transition(0.5s);
+}
 }

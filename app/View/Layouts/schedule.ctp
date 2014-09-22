@@ -7,6 +7,7 @@
 			echo $this->html->css('../font-awesome/css/font-awesome.min');
 
 			echo $this->html->script('jQuery');
+			echo $this->html->script('jquery-ui/jquery-ui.min');
 			echo $this->html->script('schedule');
 			echo $this->html->script('weeklySchedule');
 

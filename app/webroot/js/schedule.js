@@ -5,6 +5,8 @@ var months = new Array('January', 'February', 'March', 'April', 'May', 'June', '
 $(document).ready(function()
 {
 	SetupClickHandlers();
+	SetupDragAndDropHandlers();
+
 	CreateNewSchedule('weekly');
 });
 
@@ -38,5 +40,45 @@ function SetupClickHandlers()
 	$('#sidebar	#top #close').on('click', function()
 	{
 		$('#sidebar').addClass('collapsed');
+	});
+
+	$('#sidebar .team-member').on('click', function()
+	{
+		var hasClass = $(this).hasClass('selected');
+
+		$('#sidebar .team-member').removeClass('selected');
+		if(!hasClass)
+		{
+			$(this).addClass('selected');
+		}
+
+		ResetDragHandlers();
+	});
+}
+
+function SetupDragAndDropHandlers()
+{
+	$('.day').droppable(
+	{
+		drop:function(event, ui)
+		{
+			alert($(this).find('.day-indicator').text());
+		}
+	});
+
+	ResetDragHandlers();
+}
+
+function ResetDragHandlers()
+{
+	$('#sidebar .team-member').draggable(
+	{
+		revert:true,
+		disabled:true
+	});
+
+	$('#sidebar .team-member.selected').draggable(
+	{
+		disabled:false
 	});
 }
