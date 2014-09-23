@@ -1,35 +1,42 @@
-var schedule;
 var days = new Array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
 var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
 
 $(document).ready(function()
 {
-	SetupClickHandlers();
-	SetupDragAndDropHandlers();
-
-	CreateNewSchedule('weekly');
+	var scheduler = new Scheduler();
+	scheduler.CreateNewSchedule('weekly');
 });
 
-function CreateNewSchedule(type)
+function Scheduler()
+{
+	var schedule;
+
+	this.SetupClickHandlers();
+	this.SetupDragAndDropHandlers();
+}
+
+Scheduler.prototype.CreateNewSchedule = function(type)
 {
 	switch(type)
 	{
 		case 'weekly':
-			schedule = new WeeklySchedule();
+			this.schedule = new WeeklySchedule();
 			break;
 	}
 }
 
-function SetupClickHandlers()
+Scheduler.prototype.SetupClickHandlers = function()
 {
+	var self = this;
+
 	$('#topbar #navigation #previous').on('click', function()
 	{
-		schedule.Previous();
+		self.schedule.Previous();
 	});
 
 	$('#topbar #navigation #next').on('click', function()
 	{
-		schedule.Next();
+		self.schedule.Next();
 	});
 
 	$('#sidebar	#top #icon').on('click', function()
@@ -52,33 +59,48 @@ function SetupClickHandlers()
 			$(this).addClass('selected');
 		}
 
-		ResetDragHandlers();
+		self.ResetDragHandlers();
 	});
 }
 
-function SetupDragAndDropHandlers()
+Scheduler.prototype.SetupDragAndDropHandlers = function()
 {
+	var self = this;
+	
 	$('.day').droppable(
 	{
 		drop:function(event, ui)
 		{
-			alert($(this).find('.day-indicator').text());
+			self.AddToSchedule();
 		}
 	});
 
-	ResetDragHandlers();
+	this.ResetDragHandlers();
 }
 
-function ResetDragHandlers()
+Scheduler.prototype.ResetDragHandlers = function()
 {
+	var self = this;
+
 	$('#sidebar .team-member').draggable(
 	{
 		revert:true,
-		disabled:true
+		disabled:true,
+		stop:function(event, ui)
+		{
+			$(ui.helper).addClass('selected');
+
+			self.ResetDragHandlers();
+		}
 	});
 
 	$('#sidebar .team-member.selected').draggable(
 	{
 		disabled:false
 	});
+}
+
+Scheduler.prototype.AddToSchedule = function()
+{
+	alert('adding');
 }

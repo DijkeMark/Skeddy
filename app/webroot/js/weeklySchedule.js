@@ -14,6 +14,7 @@ WeeklySchedule.prototype.SetupScheduleDate = function()
 	{
 		daysInWeek[i] = this.GetDayOfWeek(i, this.weekOffset);
 		$('#schedule .day#' + i + ' .day-indicator').html(days[i] + ' ' + daysInWeek[i].getDate());
+		$('#schedule .day#' + i + ' .day-indicator').attr('id', daysInWeek[i].getFullYear() + '-' + (daysInWeek[i].getMonth() + 1) + '-' + daysInWeek[i].getDate());
 
 		var today = new Date();
 		if(daysInWeek[i].getDate() == today.getDate()
