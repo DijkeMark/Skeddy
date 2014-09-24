@@ -45,6 +45,7 @@ class Employer extends AppModel {
 				)
 			),
 			'fields' => array(
+				'id',
 				'name',
 				'insertion',
 				'lastname',

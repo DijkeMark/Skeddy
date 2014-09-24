@@ -71,7 +71,10 @@ Scheduler.prototype.SetupDragAndDropHandlers = function()
 	{
 		drop:function(event, ui)
 		{
-			self.AddToSchedule();
+			var employerId = $(ui.draggable).attr('id');
+			var date = $(this).find('.day-indicator').attr('id');
+
+			self.schedule.AddToSchedule(employerId, date);
 		}
 	});
 
@@ -98,9 +101,4 @@ Scheduler.prototype.ResetDragHandlers = function()
 	{
 		disabled:false
 	});
-}
-
-Scheduler.prototype.AddToSchedule = function()
-{
-	alert('adding');
 }

@@ -73,3 +73,24 @@ WeeklySchedule.prototype.Previous = function()
 
 	this.SetupScheduleDate();
 }
+
+WeeklySchedule.prototype.AddToSchedule = function(employerId, date)
+{
+	var startDayOfWeek = $('.day#0 .day-indicator').attr('id');
+	var endDayOfWeek = $('.day#6 .day-indicator').attr('id');
+	var scheduleType = 'weekly';
+	
+	$.ajax(
+	{
+		url:'/schedules/addNewItemToRoster',
+		type:'post',
+		data:{
+			scheduleType:	scheduleType,
+			employerId:		employerId,
+			date:			date,
+			startDayOfWeek:	startDayOfWeek,
+			endDayOfWeek:	endDayOfWeek
+		 },
+		dataType:"json"
+	});
+}

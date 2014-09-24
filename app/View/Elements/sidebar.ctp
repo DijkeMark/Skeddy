@@ -17,19 +17,19 @@ if(isset($teamMembers))
 	for($i = 0; $i < count($teamMembers); $i++)
 	{
 	?>
-		<div class="team-member">
-			<div class="profile-icon left">
+		<div class='team-member' id='<?php echo $teamMembers[$i]['Employer']['id']; ?>'>
+			<div class='profile-icon left'>
 				<?php echo $this->Html->image($teamMembers[$i]['Employer']['profile_photo'], array('alt' => '', 'class' => 'profile-photo')); ?>
 			</div>
-			<div class="info">
-				<div class="name">
+			<div class='info'>
+				<div class='name'>
 					<?php echo $teamMembers[$i]['Employer']['name'].' '.$teamMembers[$i]['Employer']['insertion'].' '.$teamMembers[$i]['Employer']['lastname']; ?>
 				</div>
-				<div class="job-name">
+				<div class='job-name'>
 					<?php echo $teamMembers[$i]['Job']['name']; ?>
 				</div>
 			</div>
-			<div class="clear"></div>
+			<div class='clear'></div>
 		</div>
 	<?php
 	}
