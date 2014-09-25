@@ -23,6 +23,8 @@ Scheduler.prototype.CreateNewSchedule = function(type)
 			this.schedule = new WeeklySchedule();
 			break;
 	}
+
+	this.schedule.GetScheduleItems();
 }
 
 Scheduler.prototype.SetupClickHandlers = function()

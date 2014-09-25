@@ -15,11 +15,6 @@ class TimeScheduleItem extends AppModel {
 		)
 	);
 
-/**
- * hasMany associations
- *
- * @var array
- */
 	public $hasMany = array(
 		'Note' => array(
 			'className' => 'Note',
@@ -27,4 +22,38 @@ class TimeScheduleItem extends AppModel {
 		)
 	);
 
+	public function getItemsForWeek($companyId, $startDayOfWeek, $endDayOfWeek)
+	{
+		$results = $this->find('all', array(
+			'contain' => array(
+				'Employer' => array(
+					'fields' => array(
+						'id',
+						'profile_photo'
+					)
+				)
+			),
+			'joins' => array(
+				array(
+					'table' => 'jobs',
+					'alias' => 'Job',
+					'type' => 'LEFT',
+					'conditions' => array(
+						'Employer.job_id = Job.id'
+					)
+				)
+			),
+			'fields' => array(
+				'id',
+				'date'
+			),
+			'conditions' => array(
+				'Job.company_id' => $companyId,
+				'date >=' => $startDayOfWeek,
+				'date <=' => $endDayOfWeek
+			)
+		));
+
+		return $results;
+	}
 }

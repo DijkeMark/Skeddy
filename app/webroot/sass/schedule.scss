@@ -104,7 +104,16 @@
 					.day-schedule {
 						height:960px;
 						background:$purple;
+						overflow:hidden;
 						@include border-radius(5px);
+					}
+
+					.roster-item {
+						width:50%;
+
+						.profile-photo {
+							width:100%;
+						}
 					}
 				}
 
