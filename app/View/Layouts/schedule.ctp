@@ -3,13 +3,8 @@
 	<head>
 		<title>Skeddy</title>
 		<?php
-			echo $this->html->css('schedule');
-			echo $this->html->css('../font-awesome/css/font-awesome.min');
-
-			echo $this->html->script('jQuery');
-			echo $this->html->script('jquery-ui/jquery-ui.min');
-			echo $this->html->script('schedule');
-			echo $this->html->script('weeklySchedule');
+			echo $this->html->css(array('schedule', '../font-awesome/css/font-awesome.min'));
+			echo $this->html->script(array('jQuery', 'jquery-ui/jquery-ui.min', 'schedule', 'weeklySchedule'));
 
 			echo $this->fetch('css');
 			echo $this->fetch('script');
@@ -17,22 +12,9 @@
 	</head>
 
 	<body>
-		<div id='topbar'>
-			<div id='navigation'>
-				<div id='previous' class='left'>
-					<i class="fa fa-angle-left"></i>
-				</div>
-				<div id='next' class='left'>
-					<i class="fa fa-angle-right"></i>
-				</div>
-			</div>
-
-			<div id='date'>
-				Month <span id='year'>Year</span>
-			</div>
-		</div>
-
 		<?php
+			echo $this->element('topbar');
+
 			echo $this->Session->flash();
 
 			echo $this->fetch('content');
