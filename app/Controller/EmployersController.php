@@ -30,7 +30,7 @@ class EmployersController extends AppController {
 	        }
 	        else
 	        {
-                $this->Session->setFlash('Your username or password was incorrect.');
+                $this->Session->setFlash('Your username or password is incorrect.');
             }
 		}
 		elseif($this->Auth->loggedIn())
@@ -42,5 +42,24 @@ class EmployersController extends AppController {
 	public function logout()
 	{
 		return $this->redirect($this->Auth->logout());
+	}
+
+	public function settings()
+	{
+		$layout = 'settings';
+		$this->layout = $layout;
+
+		if(empty($this->request->data))
+		{
+			$userId = $this->Session->read('Auth.User.id');
+	        $this->request->data = $this->Employer->findById($userId);
+	    }
+	    else if($this->request->is('post'))
+	    {
+            if($this->Employer->save($this->request->data))
+            {
+            	echo 'saved';
+            }
+	    }
 	}
 }

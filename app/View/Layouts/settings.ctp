@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Skeddy</title>
+		<?php
+			echo $this->html->css(array('schedule', '../font-awesome/css/font-awesome.min'));
+			echo $this->html->script(array('jQuery', 'jquery-ui/jquery-ui.min'));
+
+			echo $this->fetch('css');
+			echo $this->fetch('script');
+		?>
+	</head>
+
+	<body>
+		<?php
+			echo $this->element('topbar');
+
+			echo $this->Session->flash();
+
+			echo $this->fetch('content');
+		?>
+	</body>
+</html>
