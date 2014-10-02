@@ -13,4 +13,13 @@ class InvitedEmployer extends AppModel {
 			'foreignKey' => 'company_id'
 		)
 	);
+
+	public function findInvitedEmployersByCompanyId($companyId)
+	{
+		$results = $this->find('all', array(
+			'recursive' => -1,
+		));
+
+		return $results;
+	}
 }
