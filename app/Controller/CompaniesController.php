@@ -7,18 +7,19 @@ class CompaniesController extends AppController {
 
 	public function invite()
 	{
+		$companyId = $this->Session->read('Auth.User.Job.company_id');
+
 		if(empty($this->request->data))
 		{
 			$layout = 'settings';
 			$this->layout = $layout;
 
-			$data['companyId'] = $this->Session->read('Auth.User.Job.company_id');
+			$data['companyId'] = $companyId;
 			$this->set($data);
 		}
 		else if($this->request->is('post'))
 	    {
 	    	$this->autoRender = false;
-	    	$companyId = $this->Session->read('Auth.User.Job.company_id');
 	    	$jsonData = array();
 
 	    	if(count($this->InvitedEmployer->findAllByEmail($this->request->data['InvitedEmployer']['email'])) == 0)
@@ -27,15 +28,15 @@ class CompaniesController extends AppController {
 
 	            if(!$this->InvitedEmployer->save($this->request->data))
 	            {
-	            	$jsonData['error'] = 'An error occured while saving this invite. Please try again later.';
+	            	$jsonData['Error'] = 'An error occured while saving this invite. Please try again later.';
 	            }
 	        }
 	        else
 	        {
-	        	$jsonData['error'] = 'This email has already been invited.';
+	        	$jsonData['Error'] = 'This email has already been invited.';
 	        }
 
-            $jsonData['invitedEmployers'] = $this->InvitedEmployer->findInvitedEmployersByCompanyId($companyId);
+            $jsonData['InvitedEmployers'] = $this->InvitedEmployer->findInvitedEmployersByCompanyId($companyId);
 
             echo json_encode($jsonData);
 	    }

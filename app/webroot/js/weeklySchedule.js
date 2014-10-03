@@ -109,7 +109,6 @@ WeeklySchedule.prototype.AddToSchedule = function(employerId, date)
 			startDayOfWeek:	startDayOfWeek,
 			endDayOfWeek:	endDayOfWeek
 		},
-		dataType:"text",
 		success:function(data)
 		{
 			var jsonData = $.parseJSON(data);
