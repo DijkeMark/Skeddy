@@ -66,10 +66,16 @@ class MandrillTransport extends AbstractTransport {
             'tracking_domain' => null,
             'signing_domain' => null,
             'return_path_domain' => null,
-            'merge' => true,
-            'tags' => $this->_headers['X-Tags'],
-            'subaccount' => $this->_headers['X-SubAccount'],
+            'merge' => true
         );
+
+        if (!empty($this->_headers['X-Tags'])) {
+            $message['tags'] = $this->_headers['X-Tags'];
+        }
+
+        if (!empty($this->_headers['X-SubAccount'])) {
+            $message['subaccount'] = $this->_headers['X-SubAccount'];
+        }
 
         if (!empty($this->_headers['X-GlobalVars'])) {
             $message['global_merge_vars'] = $this->_headers['X-GlobalVars'];

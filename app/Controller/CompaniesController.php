@@ -1,9 +1,10 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('CakeEmail', 'Network/Email');
 
 class CompaniesController extends AppController {
 
-	public $uses = array('InvitedEmployer');
+	public $uses = array('InvitedEmployer', 'Company');
 
 	public function invite()
 	{
@@ -15,6 +16,7 @@ class CompaniesController extends AppController {
 			$this->layout = $layout;
 
 			$data['companyId'] = $companyId;
+			$data['invitedEmployers'] = $this->InvitedEmployer->findInvitedEmployersByCompanyId($companyId);
 			$this->set($data);
 		}
 		else if($this->request->is('post'))
@@ -26,7 +28,30 @@ class CompaniesController extends AppController {
 	    	{
 	            $this->request->data['InvitedEmployer']['invitation_code'] = $this->generateInvitationCode();
 
-	            if(!$this->InvitedEmployer->save($this->request->data))
+	            if($this->InvitedEmployer->save($this->request->data))
+	            {
+	            	$company = $this->Company->findById($companyId);
+
+	            	$email = new CakeEmail('mandrill');
+	            	$email->template('InviteEmployer');
+	            	$email->to($this->request->data['InvitedEmployer']['email']);
+	            	$email->subject('Mandrill CakePHP Plugin Test');
+	            	$email->viewVars(array(
+	            		'name' => 'Mark',
+	            		'company' => $company['Company']['name'],
+	            		'url' => 'http://www.skeddy.dev/employers/registration/'.$this->request->data['InvitedEmployer']['invitation_code']
+	            	));
+
+	            	if($email->send()[0]['status'] == 'sent')
+	            	{
+	            		$inviteId = $this->InvitedEmployer->getLastInsertID();
+	            		$invite = $this->InvitedEmployer->findById($inviteId);
+	            		$invite['InvitedEmployer']['invite_send'] = 1;
+
+	            		$this->InvitedEmployer->save($invite);
+	            	}
+	            }
+	            else
 	            {
 	            	$jsonData['Error'] = 'An error occured while saving this invite. Please try again later.';
 	            }
@@ -44,7 +69,7 @@ class CompaniesController extends AppController {
 
 	private function generateInvitationCode()
 	{
-		$allowedCodeChars = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's','t', 'u', 'v', 'w', 'x', 'y', 'z',
+		$allowedCodeChars = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 			'1', '2', '3', '4', '5', '6', '7', '8', '9', '0');
 		$codeUnique = false;
 		$invitationCode = '';

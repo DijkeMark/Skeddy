@@ -12,5 +12,21 @@
 	?>
 
 	<div id='error'></div>
-	<div id='pending-invitations'></div>
+	<div id='pending-invitations'>
+		<?php
+		for($i = 0; $i < count($invitedEmployers); $i++)
+		{
+			$employer = $invitedEmployers[$i]['InvitedEmployer'];
+			$id = $employer['id'];
+			$email = $employer['email'];
+		?>
+			<div class="invited-employer" id="<?php echo $id; ?>">
+				<div class="email left"><?php echo $email; ?></div>
+				<div class="cancel right">Cancel</div>
+				<div class="clear"></div>
+			</div>
+		<?php
+		}
+		?>
+	</div>
 </div>
