@@ -30,16 +30,13 @@ class TimeScheduleItem extends AppModel {
 					'fields' => array(
 						'id',
 						'profile_photo'
-					)
-				)
-			),
-			'joins' => array(
-				array(
-					'table' => 'jobs',
-					'alias' => 'Job',
-					'type' => 'LEFT',
-					'conditions' => array(
-						'Employer.job_id = Job.id'
+					),
+					'Job' => array(
+						'Company' => array(
+							'conditions' => array(
+								'id' => $companyId
+							)
+						)
 					)
 				)
 			),
@@ -48,7 +45,6 @@ class TimeScheduleItem extends AppModel {
 				'date'
 			),
 			'conditions' => array(
-				'Job.company_id' => $companyId,
 				'date >=' => $startDayOfWeek,
 				'date <=' => $endDayOfWeek
 			)

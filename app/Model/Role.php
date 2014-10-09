@@ -3,13 +3,13 @@ App::uses('AppModel', 'Model');
 /**
  * Role Model
  *
- * @property Employer $Employer
+ * @property Job $Job
  */
 class Role extends AppModel {
-	
+
 	public $hasMany = array(
-		'Employer' => array(
-			'className' => 'Employer',
+		'Job' => array(
+			'className' => 'Job',
 			'foreignKey' => 'role_id'
 		)
 	);

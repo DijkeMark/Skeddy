@@ -4,6 +4,7 @@ App::uses('AppModel', 'Model');
  * Job Model
  *
  * @property Company $Company
+ * @property Role $Role
  * @property Employer $Employer
  */
 class Job extends AppModel {
@@ -12,13 +13,19 @@ class Job extends AppModel {
 		'Company' => array(
 			'className' => 'Company',
 			'foreignKey' => 'company_id'
+		),
+		'Role' => array(
+			'className' => 'Role',
+			'foreignKey' => 'role_id'
 		)
 	);
 
-	public $hasMany = array(
+	public $hasAndBelongsToMany = array(
 		'Employer' => array(
 			'className' => 'Employer',
-			'foreignKey' => 'job_id'
+			'joinTable' => 'employers_jobs',
+			'foreignKey' => 'job_id',
+			'associationForeignKey' => 'employer_id'
 		)
 	);
 

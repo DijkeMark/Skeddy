@@ -67,9 +67,9 @@ class AppController extends Controller {
         )
 	);
 	
-	public function hasAccess($requiredRoleId)
+	public function hasAccess($requiredRoleId, $roleId)
 	{
-		if($requiredRoleId == $this->Session->read('Auth.User.Role.id'))
+		if($requiredRoleId == $roleId)
 		{
 			return true;
 		}

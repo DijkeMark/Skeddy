@@ -64,7 +64,6 @@ WeeklySchedule.prototype.SetupScheduleDate = function()
 	$('#topbar #date').html(monthYear);
 
 	$('.day-schedule').empty();
-	this.GetScheduleItems();
 }
 
 WeeklySchedule.prototype.GetDayOfWeek = function(dayOfWeek, weekOffset)
@@ -111,7 +110,6 @@ WeeklySchedule.prototype.AddToSchedule = function(employerId, date)
 		},
 		success:function(data)
 		{
-			var jsonData = $.parseJSON(data);
 			if(jsonData.ScheduleItems.length > 0)
 			{
 				self.FillSchedule(jsonData);

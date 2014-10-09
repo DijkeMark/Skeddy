@@ -7,7 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class SchedulesController extends AppController {
 
-	public $uses = array('Employer', 'TimeScheduleItem');
+	public $uses = array('Company', 'EmployersJob', 'TimeScheduleItem');
 
 	public $layoutToUse = 'schedule';
 
@@ -21,19 +21,19 @@ class SchedulesController extends AppController {
 		$this->layout = $this->layoutToUse;
 
 		$data = array();
-		if($this->hasAccess(1))
+		$employerId = $this->Session->read('Auth.User.id');
+		$currentJobId = 3;
+		$jobs = $this->EmployersJob->findAllByEmployerId($employerId);
+
+		for($i = 0; $i < count($jobs); $i++)
 		{
-			$data['teamMembers'] = $this->getTeamMembers();
+			if($jobs[$i]['Job']['id'] == $currentJobId && $this->hasAccess(3, $jobs[$i]['Job']['role_id']))
+			{
+				$data['teamMembers'] = $this->Company->findEmployersByCompanyId($jobs[$i]['Job']['company_id']);
+			}	
 		}
 
 		$this->set($data);
-	}
-
-	private function getTeamMembers()
-	{
-		$companyId = $this->Session->read('Auth.User.Job.company_id');
-
-		return $this->Employer->findEmployersByCompanyId($companyId);
 	}
 
 	public function addNewItemToRoster()
@@ -90,9 +90,21 @@ class SchedulesController extends AppController {
 
 	private function GetScheduleItemsForWeek()
 	{
-		$companyId = $this->Session->read('Auth.User.Job.company_id');
+		$companyId = 0;
+		$employerId = $this->Session->read('Auth.User.id');
 		$startDayOfWeek = $this->request->data['startDayOfWeek'];
 		$endDayOfWeek = $this->request->data['endDayOfWeek'];
+
+		$currentJobId = 3;
+		$jobs = $this->EmployersJob->findAllByEmployerId($employerId);
+
+		for($i = 0; $i < count($jobs); $i++)
+		{
+			if($jobs[$i]['Job']['id'] == $currentJobId && $this->hasAccess(3, $jobs[$i]['Job']['role_id']))
+			{
+				$companyId = $jobs[$i]['Job']['company_id'];
+			}	
+		}
 
 		return $this->TimeScheduleItem->getItemsForWeek($companyId, $startDayOfWeek, $endDayOfWeek);
 	}

@@ -39,7 +39,8 @@ class CompaniesController extends AppController {
 	            	$email->viewVars(array(
 	            		'name' => 'Mark',
 	            		'company' => $company['Company']['name'],
-	            		'url' => 'http://www.skeddy.dev/employers/registration/'.$this->request->data['InvitedEmployer']['invitation_code']
+	            		'url' => 'skeddy.dev/employers/registration/',
+	            		'code' => $this->request->data['InvitedEmployer']['invitation_code']
 	            	));
 
 	            	if($email->send()[0]['status'] == 'sent')

@@ -14,7 +14,7 @@ class EmployersController extends AppController {
 	{
 		parent::beforeFilter();
 
-		$this->Auth->allow('login', 'logout');
+		$this->Auth->allow('login', 'logout', 'registration');
 	}
 
 	public function login()
@@ -55,6 +55,20 @@ class EmployersController extends AppController {
 	        $this->request->data = $this->Employer->findById($userId);
 	    }
 	    else if($this->request->is('post'))
+	    {
+            if($this->Employer->save($this->request->data))
+            {
+            	echo 'saved';
+            }
+	    }
+	}
+
+	public function registration()
+	{
+		$layout = 'settings';
+		$this->layout = $layout;
+
+	  	if($this->request->is('post'))
 	    {
             if($this->Employer->save($this->request->data))
             {
