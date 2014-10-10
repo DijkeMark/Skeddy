@@ -4,16 +4,15 @@ App::uses('CakeEmail', 'Network/Email');
 
 class CompaniesController extends AppController {
 
-	public $uses = array('InvitedEmployer', 'Company');
+	public $uses = array('InvitedEmployer', 'Employer', 'Company');
 
 	public function invite()
 	{
-		$companyId = $this->Session->read('Auth.User.Job.company_id');
+		$companyId = $this->getJobInfo($this->getEmployerId())['Job']['company_id'];
 
 		if(empty($this->request->data))
 		{
-			$layout = 'settings';
-			$this->layout = $layout;
+			$this->layout = 'settings';
 
 			$data['companyId'] = $companyId;
 			$data['invitedEmployers'] = $this->InvitedEmployer->findInvitedEmployersByCompanyId($companyId);
@@ -24,7 +23,8 @@ class CompaniesController extends AppController {
 	    	$this->autoRender = false;
 	    	$jsonData = array();
 
-	    	if(count($this->InvitedEmployer->findAllByEmail($this->request->data['InvitedEmployer']['email'])) == 0)
+	    	if(count($this->InvitedEmployer->findAllByEmail($this->request->data['InvitedEmployer']['email'])) == 0
+	    		&& count($this->Employer->findAllByEmail($this->request->data['InvitedEmployer']['email'])) == 0)
 	    	{
 	            $this->request->data['InvitedEmployer']['invitation_code'] = $this->generateInvitationCode();
 
@@ -35,12 +35,10 @@ class CompaniesController extends AppController {
 	            	$email = new CakeEmail('mandrill');
 	            	$email->template('InviteEmployer');
 	            	$email->to($this->request->data['InvitedEmployer']['email']);
-	            	$email->subject('Mandrill CakePHP Plugin Test');
+	            	$email->subject('Skeddy Registration Invite');
 	            	$email->viewVars(array(
-	            		'name' => 'Mark',
 	            		'company' => $company['Company']['name'],
-	            		'url' => 'skeddy.dev/employers/registration/',
-	            		'code' => $this->request->data['InvitedEmployer']['invitation_code']
+	            		'url' => 'skeddy.dev/employers/registration/'.$this->request->data['InvitedEmployer']['invitation_code']
 	            	));
 
 	            	if($email->send()[0]['status'] == 'sent')

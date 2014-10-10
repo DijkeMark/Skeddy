@@ -76,4 +76,28 @@ class AppController extends Controller {
 
 		return false;
 	}
+
+    public function getJobInfo($employerId)
+    {
+        $this->loadModel('EmployersJob');
+        
+        $currentJobId = 3;
+        $jobInfo = null;
+        $jobs = $this->EmployersJob->findAllByEmployerId($employerId);
+
+        for($i = 0; $i < count($jobs); $i++)
+        {
+            if($jobs[$i]['Job']['id'] == $currentJobId)
+            {
+                $jobInfo = $jobs[$i];
+            }   
+        }
+
+        return $jobInfo;
+    }
+
+    public function getEmployerId()
+    {
+        return $this->Session->read('Auth.User.id');
+    }
 }

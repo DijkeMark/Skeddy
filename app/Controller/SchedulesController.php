@@ -9,8 +9,6 @@ class SchedulesController extends AppController {
 
 	public $uses = array('Company', 'EmployersJob', 'TimeScheduleItem');
 
-	public $layoutToUse = 'schedule';
-
 	public function index()
 	{
 		$this->redirect(array('controller' => 'schedules', 'action' => 'overview'));
@@ -18,19 +16,15 @@ class SchedulesController extends AppController {
 
 	public function overview()
 	{
-		$this->layout = $this->layoutToUse;
+		$this->layout = 'schedule';
 
 		$data = array();
-		$employerId = $this->Session->read('Auth.User.id');
-		$currentJobId = 3;
-		$jobs = $this->EmployersJob->findAllByEmployerId($employerId);
 
-		for($i = 0; $i < count($jobs); $i++)
+		$job = $this->getJobInfo($this->getEmployerId());
+		
+		if($this->hasAccess(3, $job['Job']['role_id']))
 		{
-			if($jobs[$i]['Job']['id'] == $currentJobId && $this->hasAccess(3, $jobs[$i]['Job']['role_id']))
-			{
-				$data['teamMembers'] = $this->Company->findEmployersByCompanyId($jobs[$i]['Job']['company_id']);
-			}	
+			$data['teamMembers'] = $this->Company->findEmployersByCompanyId($job['Job']['company_id']);	
 		}
 
 		$this->set($data);
@@ -90,20 +84,16 @@ class SchedulesController extends AppController {
 
 	private function GetScheduleItemsForWeek()
 	{
-		$companyId = 0;
 		$employerId = $this->Session->read('Auth.User.id');
 		$startDayOfWeek = $this->request->data['startDayOfWeek'];
 		$endDayOfWeek = $this->request->data['endDayOfWeek'];
+		$companyId = 0;
 
-		$currentJobId = 3;
-		$jobs = $this->EmployersJob->findAllByEmployerId($employerId);
+		$job = $this->getJobInfo($this->getEmployerId());
 
-		for($i = 0; $i < count($jobs); $i++)
+		if($this->hasAccess(3, $job['Job']['role_id']))
 		{
-			if($jobs[$i]['Job']['id'] == $currentJobId && $this->hasAccess(3, $jobs[$i]['Job']['role_id']))
-			{
-				$companyId = $jobs[$i]['Job']['company_id'];
-			}	
+			$companyId = $job['Job']['company_id'];
 		}
 
 		return $this->TimeScheduleItem->getItemsForWeek($companyId, $startDayOfWeek, $endDayOfWeek);
