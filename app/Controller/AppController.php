@@ -66,6 +66,53 @@ class AppController extends Controller {
         	'autoRun'           => true,                       // Check if compilation is necessary, this ignores the CakePHP Debug setting
         )
 	);
+
+    public function beforeFilter()
+    {
+        if($this->Session->read('Auth.User.registration_complete') == 0)
+        {
+            $ignoreUrls = array(
+                '/',
+                '/employers/settings',
+                '/employers/registration',
+                '/employers/logout'
+            );
+
+            $goToSettings = true;
+
+            for($i = 0; $i < count($ignoreUrls); $i++)
+            {
+                $url = explode('/', $this->here);
+                $currentUrl;
+
+                switch(count($url))
+                {
+                    case 1:
+                        $currentUrl = '/';
+                        break;
+                    case 2:
+                        $currentUrl = '/'.$url[1];
+                        break;
+                    case 3:
+                        $currentUrl = '/'.$url[1].'/'.$url[2];
+                        break;
+                    default:
+                        $currentUrl = '/'.$url[1].'/'.$url[2];
+                        break;
+                }
+
+                if($currentUrl == $ignoreUrls[$i])
+                {
+                    $goToSettings = false;
+                }
+            }
+
+            if($goToSettings)
+            {
+                $this->redirect(array('controller' => 'employers', 'action' => 'settings'));
+            }
+        }
+    }
 	
 	public function hasAccess($requiredRoleId, $roleId)
 	{

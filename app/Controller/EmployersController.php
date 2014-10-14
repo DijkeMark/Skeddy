@@ -1,6 +1,7 @@
 <?php
 App::uses('AppController', 'Controller');
 App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
+App::uses('CakeEmail', 'Network/Email');
 /**
  * Employers Controller
  *
@@ -27,7 +28,7 @@ class EmployersController extends AppController {
 		{
 			if($this->Auth->login())
 			{
-	            return $this->redirect($this->Auth->redirectUrl());
+				return $this->redirect($this->Auth->redirectUrl());
 	        }
 	        else
 	        {
@@ -57,7 +58,7 @@ class EmployersController extends AppController {
 	    {
             if($this->Employer->save($this->request->data))
             {
-            	echo 'saved';
+            	$this->Session->write('Auth.User.registration_complete', 1);
             }
 	    }
 	}
@@ -75,26 +76,32 @@ class EmployersController extends AppController {
 		    	{
 		    		Security::setHash('blowfish');
 		    		$this->request->data['Employer']['password'] = Security::hash($this->request->data['Employer']['first_password']);
+		    		
 		    		if($this->Employer->save($this->request->data))
 		            {
 		            	$this->InvitedEmployer->delete($this->request->data['Employer']['invite_id']);
 
-		            	//Send mail for completing registration
-		            	
+		            	$email = new CakeEmail('mandrill');
+		            	$email->template('EmployerRegistration');
+		            	$email->to($this->request->data['Employer']['email']);
+		            	$email->subject('Skeddy Registration');
+		            	$email->viewVars(array(
+		            		'email' => $this->request->data['Employer']['email'],
+		            		'password' => $this->request->data['Employer']['first_password']
+		            	));
+		            	$email->send();
 
-		            	//Login and redirect to settings
+						$this->redirect(array('controller' => 'employers', 'action' => 'login'));
 		            }
 		    	}
 		    	else
 		    	{
-		    		$data['error'] = 'Passwords do not match';
-		    		$this->set($data);
+		    		$this->Session->setFlash('Passwords do not match.');
 		    	}
 		    }
 		    else
 		    {
-		    	$data['error'] = 'Please enter all password fields';
-		    	$this->set($data);
+		    	$this->Session->setFlash('Please enter all password fields.');
 		    }
 	    }
 	    else
