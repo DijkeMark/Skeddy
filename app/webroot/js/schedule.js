@@ -41,21 +41,31 @@ Scheduler.prototype.SetupClickHandlers = function()
 		self.schedule.Next();
 	});
 
-	$('#sidebar	#top #icon').on('click', function()
+	$('#topbar #navigation #today').on('click', function()
 	{
-		$('#sidebar').toggleClass('collapsed');
+		self.schedule.Today();
 	});
 
-	$('#sidebar	#top #close').on('click', function()
+	$('#l-sb-btn').on('click', function()
 	{
-		$('#sidebar').addClass('collapsed');
+		$('#left-sidebar').removeClass('collapsed');
 	});
 
-	$('#sidebar .team-member').on('click', function()
+	$('#r-sb-btn').on('click', function()
+	{
+		$('#right-sidebar').removeClass('collapsed');
+	});
+
+	$('.sidebar #top #close').on('click', function()
+	{
+		$('.sidebar').addClass('collapsed');
+	});
+
+	$('#right-sidebar .team-member').on('click', function()
 	{
 		var hasClass = $(this).hasClass('selected');
 
-		$('#sidebar .team-member').removeClass('selected');
+		$('#right-sidebar .team-member').removeClass('selected');
 		if(!hasClass)
 		{
 			$(this).addClass('selected');
@@ -87,7 +97,7 @@ Scheduler.prototype.ResetDragHandlers = function()
 {
 	var self = this;
 
-	$('#sidebar .team-member').draggable(
+	$('#right-sidebar .team-member').draggable(
 	{
 		revert:true,
 		disabled:true,
@@ -99,7 +109,7 @@ Scheduler.prototype.ResetDragHandlers = function()
 		}
 	});
 
-	$('#sidebar .team-member.selected').draggable(
+	$('#right-sidebar .team-member.selected').draggable(
 	{
 		disabled:false
 	});

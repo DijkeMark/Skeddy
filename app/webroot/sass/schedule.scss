@@ -16,17 +16,21 @@
 
 	#navigation {
 		line-height:51px;
-		font-size:30px;
 
-		#previous {
-			margin-right:30px;
+		.icon {
+			font-size:20px;
 
-			&:hover {
-				cursor:pointer;
+			&#l-sb-btn {
+				margin-right:20px;
 			}
-		}
 
-		#next {
+			&#next, &#previous {
+				font-size:30px;
+			}
+
+			&.left {
+				margin-right:20px;
+			}
 
 			&:hover {
 				cursor:pointer;
@@ -133,16 +137,14 @@
 }
 
 /********************************************************/
-/* Sidebar 												*/
+/* Sidebars												*/
 /********************************************************/
-#sidebar {
+.sidebar {
 	width:238px;
 	position:absolute;
 	top:0px;
 	bottom:0px;
-	right:0px;
 	background:white;
-	border-left:1px solid $grey5;
 	@include transition(0.5s);
 
 	#top {
@@ -150,16 +152,6 @@
 		height:61px;
 		line-height:51px;
 		font-size:16px;
-
-		#icon {
-			position:absolute;
-			left:-50px;
-			font-size:20px;
-
-			&:hover {
-				cursor:pointer;
-			}
-		}
 
 		#title {
 			padding-right:20px;
@@ -178,6 +170,15 @@
 			}
 		}
 	}
+
+	&.collapsed {
+		@include transition(0.5s);
+	}
+}
+
+#right-sidebar {
+	right:0px;
+	border-left:1px solid $grey5;
 
 	#team-members {
 
@@ -224,7 +225,15 @@
 
 	&.collapsed {
 		right:-238px;
-		@include transition(0.5s);
+	}
+}
+
+#left-sidebar {
+	left:0px;
+	border-right:1px solid $grey5;
+
+	&.collapsed {
+		left:-238px;
 	}
 }
 

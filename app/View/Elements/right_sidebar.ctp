@@ -2,11 +2,8 @@
 if(isset($teamMembers))
 {
 ?>
-<div id='sidebar' class='collapsed'>
+<div id='right-sidebar' class='sidebar collapsed'>
 	<div id='top'>
-		<div id='icon'>
-			<i class="fa fa-users"></i>
-		</div>
 		<div id='close'>
 			<i class="fa fa-times"></i>
 		</div>

@@ -99,4 +99,5 @@
 	</div>
 </div>
 
-<?php echo $this->element('sidebar'); ?>
+<?php echo $this->element('left_sidebar'); ?>
+<?php echo $this->element('right_sidebar'); ?>

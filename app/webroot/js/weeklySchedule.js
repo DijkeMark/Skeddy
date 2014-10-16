@@ -80,6 +80,7 @@ WeeklySchedule.prototype.Next = function()
 	this.weekOffset += 1;
 
 	this.SetupScheduleDate();
+	this.GetScheduleItems();
 }
 
 WeeklySchedule.prototype.Previous = function()
@@ -87,6 +88,15 @@ WeeklySchedule.prototype.Previous = function()
 	this.weekOffset -= 1;
 
 	this.SetupScheduleDate();
+	this.GetScheduleItems();
+}
+
+WeeklySchedule.prototype.Today = function()
+{
+	this.weekOffset = 0;
+
+	this.SetupScheduleDate();
+	this.GetScheduleItems();
 }
 
 WeeklySchedule.prototype.AddToSchedule = function(employerId, date)
@@ -108,7 +118,7 @@ WeeklySchedule.prototype.AddToSchedule = function(employerId, date)
 			startDayOfWeek:	startDayOfWeek,
 			endDayOfWeek:	endDayOfWeek
 		},
-		success:function(data)
+		success:function(jsonData)
 		{
 			if(jsonData.ScheduleItems.length > 0)
 			{
