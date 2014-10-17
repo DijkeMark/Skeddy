@@ -141,7 +141,7 @@
 /********************************************************/
 .sidebar {
 	width:238px;
-	position:fixed;
+	position:absolute;
 	top:72px;
 	bottom:0px;
 	background:white;
@@ -229,11 +229,12 @@
 }
 
 #c-l-sb {
+	width:275px;
 	left:0px;
 	border-right:1px solid $grey5;
 
 	&.collapsed {
-		left:-238px;
+		left:-275px;
 	}
 
 	#calendar {
@@ -255,8 +256,13 @@
 			}
 		}
 
-		#month {
-			width:178px;
+		#calendar-container {
+			width:210px;
+
+			#month {
+				width:175px;
+				float:left;
+			}
 
 			.day {
 				width:23px;
@@ -271,6 +277,12 @@
 					background:none;
 					border:1px solid transparent;
 				}
+			}
+
+			#week-numbers {
+				padding:25px 10px 0px 0px;
+				width:25px;
+				float:left;
 			}
 		}
 	}

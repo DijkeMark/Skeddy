@@ -18,18 +18,22 @@
 			</div>
 		</div>
 
-		<div id='month'>
-			<div id='legend'>
-				<div class="day left legend">M</div>
-				<div class="day left legend">T</div>
-				<div class="day left legend">W</div>
-				<div class="day left legend">T</div>
-				<div class="day left legend">F</div>
-				<div class="day left legend">S</div>
-				<div class="day left legend">S</div>
-				<div class="clear"></div>
+		<div id='calendar-container'>
+			<div id='week-numbers'></div>
+			<div id='month'>
+				<div id='legend'>
+					<div class="day left legend">M</div>
+					<div class="day left legend">T</div>
+					<div class="day left legend">W</div>
+					<div class="day left legend">T</div>
+					<div class="day left legend">F</div>
+					<div class="day left legend">S</div>
+					<div class="day left legend">S</div>
+					<div class="clear"></div>
+				</div>
+				<div id='days'></div>
 			</div>
-			<div id='days'></div>
+			<div class="clear"></div>
 		</div>
 	</div>
 </div>

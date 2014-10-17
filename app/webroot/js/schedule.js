@@ -134,7 +134,7 @@ function SidebarCalendar()
 }
 
 SidebarCalendar.prototype.SetupCalendar = function()
-{
+{		
 	var date = new Date();
     date.setDate(1);
     date.setMonth(date.getMonth() + this.monthOffset);
@@ -148,6 +148,7 @@ SidebarCalendar.prototype.SetupCalendar = function()
     }
 
     $('#calendar #days').empty();
+    $('#calendar #week-numbers').empty();
 
     if(day == 0)
     {
@@ -155,6 +156,8 @@ SidebarCalendar.prototype.SetupCalendar = function()
 	    {
 	    	$('#calendar #days').append('<div class="day left hidden"></div>');
 	    }
+
+	    $('#calendar #week-numbers').append('<div class="day hidden"></div>');
 	}
 
     for(var i = 0; i < day; i++)
@@ -162,8 +165,20 @@ SidebarCalendar.prototype.SetupCalendar = function()
     	$('#calendar #days').append('<div class="day left hidden"></div>');
     }
 
-    for(var i = 0; i < this.GetDaysInMonth(date.getMonth() + 1, date.getFullYear()); i++)
+    var weekNumbers = Array();
+
+    for(var i = 0; i < date.GetDaysInMonth(date.getMonth() + 1, date.getFullYear()); i++)
     {
+    	date.setDate(i + 1);
+    	weekNumber = date.GetWeekNumber();
+
+    	if($.inArray(weekNumber, weekNumbers) == -1)
+    	{
+    		weekNumbers.push(weekNumber);
+
+    		$('#calendar #week-numbers').append('<div class="day legend">' + weekNumber + '</div>');
+    	}
+
     	$('#calendar #days').append('<div class="day left" id="' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + (i + 1) + '">' + (i + 1) + '</div>');
     }
 
@@ -184,7 +199,15 @@ SidebarCalendar.prototype.Previous = function()
 	this.SetupCalendar();
 }
 
-SidebarCalendar.prototype.GetDaysInMonth = function(month, year)
+Date.prototype.GetDaysInMonth = function(month, year)
 {
     return new Date(year, month, 0).getDate();
+}
+
+Date.prototype.GetWeekNumber = function()
+{
+	var date = new Date(+this);
+    date.setHours(0, 0, 0);
+    date.setDate(date.getDate() + 4 - (date.getDay() || 7));
+    return Math.ceil((((date - new Date(date.getFullYear(), 0, 1)) / 8.64e7) + 1 ) / 7);
 }
