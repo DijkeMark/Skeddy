@@ -141,8 +141,8 @@
 /********************************************************/
 .sidebar {
 	width:238px;
-	position:absolute;
-	top:0px;
+	position:fixed;
+	top:72px;
 	bottom:0px;
 	background:white;
 	@include transition(0.5s);
@@ -176,7 +176,7 @@
 	}
 }
 
-#right-sidebar {
+#tm-r-sb {
 	right:0px;
 	border-left:1px solid $grey5;
 
@@ -228,7 +228,7 @@
 	}
 }
 
-#left-sidebar {
+#c-l-sb {
 	left:0px;
 	border-right:1px solid $grey5;
 

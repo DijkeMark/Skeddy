@@ -1,4 +1,4 @@
-<div id='left-sidebar' class='sidebar collapsed'>
+<div id='c-l-sb' class='sidebar collapsed'>
 	<div id='top'>
 		<div id='close'>
 			<i class="fa fa-times"></i>

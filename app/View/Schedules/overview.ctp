@@ -99,5 +99,5 @@
 	</div>
 </div>
 
-<?php echo $this->element('left_sidebar'); ?>
-<?php echo $this->element('right_sidebar'); ?>
+<?php echo $this->element('c-l-sb'); ?>
+<?php echo $this->element('tm-r-sb'); ?>
