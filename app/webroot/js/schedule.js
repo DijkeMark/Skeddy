@@ -9,7 +9,8 @@ $(document).ready(function()
 
 function Scheduler()
 {
-	var schedule;
+	this.schedule;
+	this.sidebarCalendar = new SidebarCalendar();
 
 	this.SetupClickHandlers();
 	this.SetupDragAndDropHandlers();
@@ -73,13 +74,23 @@ Scheduler.prototype.SetupClickHandlers = function()
 
 		self.ResetDragHandlers();
 	});
+
+	$('#c-l-sb #calendar-navigation #next').on('click', function()
+	{
+		self.sidebarCalendar.Next();
+	});
+
+	$('#c-l-sb #calendar-navigation #previous').on('click', function()
+	{
+		self.sidebarCalendar.Previous();
+	});
 }
 
 Scheduler.prototype.SetupDragAndDropHandlers = function()
 {
 	var self = this;
 	
-	$('.day').droppable(
+	$('#schedule .day').droppable(
 	{
 		drop:function(event, ui)
 		{
@@ -113,4 +124,67 @@ Scheduler.prototype.ResetDragHandlers = function()
 	{
 		disabled:false
 	});
+}
+
+function SidebarCalendar()
+{
+	this.monthOffset = 0;
+
+	this.SetupCalendar();
+}
+
+SidebarCalendar.prototype.SetupCalendar = function()
+{
+	var date = new Date();
+    date.setDate(1);
+    date.setMonth(date.getMonth() + this.monthOffset);
+
+    $('#calendar #calendar-navigation #month').html(months[date.getMonth()] + ' ' + date.getFullYear());
+
+    day = date.getDay() - 1;
+    if(day < 0)
+    {
+    	day = 6;
+    }
+
+    $('#calendar #days').empty();
+
+    if(day == 0)
+    {
+	    for(var i = 0; i < 7; i++)
+	    {
+	    	$('#calendar #days').append('<div class="day left hidden"></div>');
+	    }
+	}
+
+    for(var i = 0; i < day; i++)
+    {
+    	$('#calendar #days').append('<div class="day left hidden"></div>');
+    }
+
+    for(var i = 0; i < this.GetDaysInMonth(date.getMonth() + 1, date.getFullYear()); i++)
+    {
+    	$('#calendar #days').append('<div class="day left" id="' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + (i + 1) + '">' + (i + 1) + '</div>');
+    }
+
+    $('#calendar #days').append('<div class="clear"></div>');
+}
+
+SidebarCalendar.prototype.Next = function()
+{
+	this.monthOffset += 1;
+
+	this.SetupCalendar();
+}
+
+SidebarCalendar.prototype.Previous = function()
+{
+	this.monthOffset -= 1;
+
+	this.SetupCalendar();
+}
+
+SidebarCalendar.prototype.GetDaysInMonth = function(month, year)
+{
+    return new Date(year, month, 0).getDate();
 }

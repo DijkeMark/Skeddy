@@ -1,6 +1,5 @@
 function WeeklySchedule()
 {
-	this.currentDate = new Date();
 	this.weekOffset = 0;
 
 	this.SetupScheduleDate();

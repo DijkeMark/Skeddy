@@ -23,3 +23,13 @@ body {
 .clear {
 	clear:both;
 }
+
+.icon {
+	&:hover {
+		cursor:pointer;
+	}
+}
+
+.hidden {
+	opacity:0;
+}
