@@ -152,17 +152,31 @@ SidebarCalendar.prototype.SetupCalendar = function()
 
     if(day == 0)
     {
+    	var lastMonth = new Date();
+    	lastMonth.setDate(1);
+    	lastMonth.setMonth(lastMonth.getMonth() + this.monthOffset - 1);
+    	daysInLastMonth = lastMonth.GetDaysInMonth(lastMonth.getMonth() + 1, lastMonth.getFullYear()) - 6;
+    	lastMonth.setDate(daysInLastMonth);
+    	weekNumber = lastMonth.GetWeekNumber();
+
 	    for(var i = 0; i < 7; i++)
 	    {
-	    	$('#calendar #days').append('<div class="day left hidden"></div>');
+	    	$('#calendar #days').append('<div class="day left other-month">' + daysInLastMonth + '</div>');
+	    	daysInLastMonth += 1;
 	    }
 
-	    $('#calendar #week-numbers').append('<div class="day hidden"></div>');
+	    $('#calendar #week-numbers').append('<div class="day legend">' + weekNumber + '</div>');
 	}
+
+	var lastMonth = new Date();
+	lastMonth.setDate(1);
+	lastMonth.setMonth(lastMonth.getMonth() + this.monthOffset - 1);
+	daysInLastMonth = lastMonth.GetDaysInMonth(lastMonth.getMonth() + 1, lastMonth.getFullYear()) - (day - 1);
 
     for(var i = 0; i < day; i++)
     {
-    	$('#calendar #days').append('<div class="day left hidden"></div>');
+    	$('#calendar #days').append('<div class="day left other-month">' + daysInLastMonth + '</div>');
+	    daysInLastMonth += 1;
     }
 
     var weekNumbers = Array();
@@ -180,6 +194,24 @@ SidebarCalendar.prototype.SetupCalendar = function()
     	}
 
     	$('#calendar #days').append('<div class="day left" id="' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + (i + 1) + '">' + (i + 1) + '</div>');
+    }
+
+    var maxDaysOnCalendar = 42;
+    daysDifference = maxDaysOnCalendar - $('#calendar-container #days .day').length;
+
+    var nextMonth = new Date();
+	nextMonth.setDate(1);
+	nextMonth.setMonth(nextMonth.getMonth() + this.monthOffset + 1);
+
+    for(var i = 0; i < daysDifference; i++)
+    {
+    	nextMonth.setDate(i + 1);
+    	$('#calendar #days').append('<div class="day left other-month">' + nextMonth.getDate() + '</div>');
+    }
+
+    if(daysDifference >= 7)
+    {
+    	$('#calendar #week-numbers').append('<div class="day legend">' + nextMonth.GetWeekNumber() + '</div>');
     }
 
     $('#calendar #days').append('<div class="clear"></div>');
