@@ -25,8 +25,9 @@ Scheduler.prototype.CreateNewSchedule = function(type)
 			break;
 	}
 
-	this.schedule.GetScheduleItems();
 	this.sidebarCalendar.SetSchedule(this.schedule);
+	this.schedule.SetSidebar(this.sidebarCalendar);
+	this.schedule.GetScheduleItems();
 }
 
 Scheduler.prototype.SetupClickHandlers = function()
@@ -195,7 +196,19 @@ SidebarCalendar.prototype.SetupCalendar = function()
     		$('#calendar #week-numbers').append('<div class="day legend">' + weekNumber + '</div>');
     	}
 
-    	$('#calendar #days').append('<div class="day left" id="' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + (i + 1) + '">' + (i + 1) + '</div>');
+    	day = i + 1;
+    	if(day < 10)
+    	{
+    		day = '0' + day;
+    	}
+
+    	month = date.getMonth() + 1;
+    	if(month < 10)
+    	{
+    		month = '0' + month;
+    	}
+
+    	$('#calendar #days').append('<div class="day left active" id="' + date.getFullYear() + '-' + month + '-' + day + '">' + (i + 1) + '</div>');
     }
 
     var maxDaysOnCalendar = 42;
@@ -219,7 +232,7 @@ SidebarCalendar.prototype.SetupCalendar = function()
     $('#calendar #days').append('<div class="clear"></div>');
 
     var self = this;
-    $('#c-l-sb #calendar-container #days .day[id]').on('click', function()
+    $('.day.active').on('click', function()
 	{
 		var dateParts = $(this).attr('id').split('-');
 		var clickedDate = new Date();
@@ -237,6 +250,7 @@ SidebarCalendar.prototype.Next = function()
 	this.monthOffset += 1;
 
 	this.SetupCalendar();
+	this.schedule.SetSidebarActives();
 }
 
 SidebarCalendar.prototype.Previous = function()
@@ -244,6 +258,15 @@ SidebarCalendar.prototype.Previous = function()
 	this.monthOffset -= 1;
 
 	this.SetupCalendar();
+	this.schedule.SetSidebarActives();
+}
+
+SidebarCalendar.prototype.Today = function()
+{
+	this.monthOffset = 0;
+
+	this.SetupCalendar();
+	this.schedule.SetSidebarActives();
 }
 
 SidebarCalendar.prototype.SetSchedule = function(schedule)

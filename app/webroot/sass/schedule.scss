@@ -281,6 +281,18 @@
 				&.other-month {
 					opacity:0.2;
 				}
+
+				&.active {
+
+					&:hover {
+						cursor:pointer;
+					}
+
+					&.current {
+						background:$blue;
+						border:1px solid $blue2;
+					}
+				}
 			}
 
 			#week-numbers {

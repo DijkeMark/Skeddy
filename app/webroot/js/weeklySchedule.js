@@ -1,6 +1,7 @@
 function WeeklySchedule()
 {
 	this.weekOffset = 0;
+	this.sidebarCalendar;
 
 	this.SetupScheduleDate();
 }
@@ -63,6 +64,19 @@ WeeklySchedule.prototype.SetupScheduleDate = function()
 	$('#topbar #date').html(monthYear);
 
 	$('.day-schedule').empty();
+
+	this.SetSidebarActives();
+}
+
+WeeklySchedule.prototype.SetSidebarActives = function()
+{
+	$('#c-l-sb .day').removeClass('current');
+
+	$('#schedule .day').each(function()
+	{
+		var id = $(this).find('.day-indicator').attr('id');
+		$('#c-l-sb .day#' + id).addClass('current');
+	});
 }
 
 WeeklySchedule.prototype.GetDayOfWeek = function(dayOfWeek, weekOffset)
@@ -94,6 +108,8 @@ WeeklySchedule.prototype.Today = function()
 {
 	this.weekOffset = 0;
 
+	this.sidebarCalendar.Today();
+
 	this.SetupScheduleDate();
 	this.GetScheduleItems();
 }
@@ -114,6 +130,11 @@ WeeklySchedule.prototype.GoToDate = function(date)
 
 	this.SetupScheduleDate();
 	this.GetScheduleItems();
+}
+
+WeeklySchedule.prototype.SetSidebar = function(sidebarCalendar)
+{
+	this.sidebarCalendar = sidebarCalendar;
 }
 
 WeeklySchedule.prototype.AddToSchedule = function(employerId, date)
