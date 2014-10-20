@@ -26,6 +26,7 @@ Scheduler.prototype.CreateNewSchedule = function(type)
 	}
 
 	this.schedule.GetScheduleItems();
+	this.sidebarCalendar.SetSchedule(this.schedule);
 }
 
 Scheduler.prototype.SetupClickHandlers = function()
@@ -129,6 +130,7 @@ Scheduler.prototype.ResetDragHandlers = function()
 function SidebarCalendar()
 {
 	this.monthOffset = 0;
+	this.schedule;
 
 	this.SetupCalendar();
 }
@@ -215,6 +217,19 @@ SidebarCalendar.prototype.SetupCalendar = function()
     }
 
     $('#calendar #days').append('<div class="clear"></div>');
+
+    var self = this;
+    $('#c-l-sb #calendar-container #days .day[id]').on('click', function()
+	{
+		var dateParts = $(this).attr('id').split('-');
+		var clickedDate = new Date();
+		clickedDate.setFullYear(dateParts[0]);
+		clickedDate.setMonth(dateParts[1] - 1);
+		clickedDate.setDate(dateParts[2]);
+		clickedDate.setHours(0, 0, 0);
+
+		self.schedule.GoToDate(clickedDate);
+	});
 }
 
 SidebarCalendar.prototype.Next = function()
@@ -229,6 +244,11 @@ SidebarCalendar.prototype.Previous = function()
 	this.monthOffset -= 1;
 
 	this.SetupCalendar();
+}
+
+SidebarCalendar.prototype.SetSchedule = function(schedule)
+{
+	this.schedule = schedule;
 }
 
 Date.prototype.GetDaysInMonth = function(month, year)

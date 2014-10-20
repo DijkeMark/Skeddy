@@ -98,6 +98,24 @@ WeeklySchedule.prototype.Today = function()
 	this.GetScheduleItems();
 }
 
+WeeklySchedule.prototype.GoToDate = function(date)
+{
+	var dateParts = $('#schedule .day#0 .day-indicator').attr('id').split('-');
+	var firstDayOfWeek = new Date();
+	firstDayOfWeek.setFullYear(dateParts[0]);
+	firstDayOfWeek.setMonth(dateParts[1] - 1);
+	firstDayOfWeek.setDate(dateParts[2]);
+	firstDayOfWeek.setHours(0, 0, 0);
+
+	scheduleWeekNumber = firstDayOfWeek.GetWeekNumber();
+	dateWeekNumber = date.GetWeekNumber();
+
+	this.weekOffset += (dateWeekNumber - scheduleWeekNumber);
+
+	this.SetupScheduleDate();
+	this.GetScheduleItems();
+}
+
 WeeklySchedule.prototype.AddToSchedule = function(employerId, date)
 {
 	var self = this;
