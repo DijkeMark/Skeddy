@@ -163,11 +163,6 @@
 			position:absolute;
 			right:30px;
 			font-size:20px;
-			color:$grey4;
-
-			&:hover {
-				cursor:pointer;
-			}
 		}
 	}
 
@@ -301,6 +296,73 @@
 				float:left;
 			}
 		}
+	}
+}
+
+/********************************************************/
+/* Add Schedule											*/
+/********************************************************/
+#new-schedule {
+	margin:-200px 0px 0px -200px;
+	width:400px;
+	height:400px;
+	position:fixed;
+	top:50%;
+	left:50%;
+	overflow:hidden;
+	background:$grey3;
+	@include border-radius(10px);
+
+	#top {
+		padding:10px 30px 0px 30px;
+		height:61px;
+		line-height:51px;
+		font-size:16px;
+		background:white;
+		border-bottom:1px solid $grey4;
+
+		#title {
+			padding-right:20px;
+			height:inherit;
+		}
+
+		#close {
+			position:absolute;
+			right:30px;
+			font-size:20px;
+		}
+	}
+
+	#schedule-options {
+		padding:10px 30px 10px 30px;
+
+		.input {
+			margin:0px 0px 20px 0px;
+
+			label {
+				margin:0px 0px 5px 0px;
+				min-height:15px;
+				line-height:15px;
+				font-size:12px;
+				display:block;
+			}
+
+			input[type=text] {
+				padding:5px 10px 5px 10px;
+				width:320px;
+				font-size:14px;
+			}
+
+			select {
+				padding:5px 10px 5px 10px;
+				width:160px;
+				font-size:14px;
+			}
+		}
+	}
+
+	&.collapsed {
+		@include transition(0.5s);
 	}
 }
 

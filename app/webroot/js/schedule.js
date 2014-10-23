@@ -99,7 +99,26 @@ Scheduler.prototype.SetupDragAndDropHandlers = function()
 			var employerId = $(ui.draggable).attr('id');
 			var date = $(this).find('.day-indicator').attr('id');
 
-			self.schedule.AddToSchedule(employerId, date);
+			$('body').append('<div id="add-to-schedule"></div>');
+
+			$('#add-to-schedule').load('/schedules/loadNewScheduleElement', function()
+			{
+				$('#new-schedule #close').on('click', function()
+				{
+					$('#add-to-schedule').remove();
+				});
+				$('#new-schedule #datepicker').datepicker();
+				$('#new-schedule #datepicker').datepicker('option', 'dateFormat', 'yy-mm-dd');
+				$('#new-schedule #datepicker').datepicker('setDate', date);
+
+				$('#new-schedule #add-schedule').on('click', function(event)
+				{
+					event.preventDefault();
+
+					form = $("#TimeScheduleItemLoadNewScheduleElementForm").serialize();
+					self.schedule.AddToSchedule(employerId, form);
+				});
+			});
 		}
 	});
 

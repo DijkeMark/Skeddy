@@ -3,7 +3,7 @@
 	<head>
 		<title>Skeddy</title>
 		<?php
-			echo $this->html->css(array('schedule', '../font-awesome/css/font-awesome.min'));
+			echo $this->html->css(array('schedule', '../font-awesome/css/font-awesome.min', '../js/jquery-ui/jquery-ui.min'));
 			echo $this->html->script(array('jQuery', 'jquery-ui/jquery-ui.min', 'schedule', 'weeklySchedule'));
 
 			echo $this->fetch('css');

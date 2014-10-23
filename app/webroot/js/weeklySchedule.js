@@ -137,7 +137,7 @@ WeeklySchedule.prototype.SetSidebar = function(sidebarCalendar)
 	this.sidebarCalendar = sidebarCalendar;
 }
 
-WeeklySchedule.prototype.AddToSchedule = function(employerId, date)
+WeeklySchedule.prototype.AddToSchedule = function(employerId, form)
 {
 	var self = this;
 	var startDayOfWeek = $('.day#0 .day-indicator').attr('id');
@@ -149,18 +149,15 @@ WeeklySchedule.prototype.AddToSchedule = function(employerId, date)
 		url:'/schedules/addNewItemToRoster',
 		type:'post',
 		dataType:'json',
-		data:{
-			scheduleType:	scheduleType,
-			employerId:		employerId,
-			date:			date,
-			startDayOfWeek:	startDayOfWeek,
-			endDayOfWeek:	endDayOfWeek
-		},
+		data:form + '&scheduleType=' + encodeURIComponent(scheduleType)
+			+ '&employerId=' + encodeURIComponent(employerId)
+			+ '&startDayOfWeek=' + encodeURIComponent(startDayOfWeek)
+			+ '&endDayOfWeek=' + encodeURIComponent(endDayOfWeek),
 		success:function(jsonData)
 		{
 			if(jsonData.ScheduleItems.length > 0)
 			{
-				self.FillSchedule(jsonData);
+				//self.FillSchedule(jsonData);
 			}
 		}
 	});

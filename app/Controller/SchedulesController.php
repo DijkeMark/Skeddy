@@ -7,7 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class SchedulesController extends AppController {
 
-	public $uses = array('Company', 'EmployersJob', 'TimeScheduleItem');
+	public $uses = array('Company', 'EmployersJob', 'TimeScheduleItem', 'EmployersTimeScheduleItem');
 
 	public function index()
 	{
@@ -36,13 +36,18 @@ class SchedulesController extends AppController {
 
 		if($this->request->is('post'))
 		{
-			$data = array();
-			$data['TimeScheduleItem'] = array(
-				'date' => $this->request->data['date'],
-				'employer_id' => $this->request->data['employerId']
-			);
-			
-			$this->TimeScheduleItem->save($data);
+			$item['TimeScheduleItem'] = $this->request->data['TimeScheduleItem'];
+			$item['TimeScheduleItem']['date'] = $item['TimeScheduleItem']['datepicker'];
+			$item['TimeScheduleItem']['start_minute'] = $item['TimeScheduleItem']['start_minute'] * 5;
+			$item['TimeScheduleItem']['end_minute'] = $item['TimeScheduleItem']['end_minute'] * 5;
+
+			if($this->TimeScheduleItem->save($item))
+			{
+				$data['EmployersTimeScheduleItem']['employer_id'] = $this->request->data['employerId'];
+				$data['EmployersTimeScheduleItem']['time_schedule_item_id'] = $this->TimeScheduleItem->getLastInsertID();
+
+				$this->EmployersTimeScheduleItem->save($data);
+			}
 
 			return json_encode($this->findCorrectScheduleItems());
 		}
@@ -97,5 +102,13 @@ class SchedulesController extends AppController {
 		}
 
 		return $this->TimeScheduleItem->getItemsForWeek($companyId, $startDayOfWeek, $endDayOfWeek);
+	}
+
+	public function loadNewScheduleElement()
+	{
+		$this->autoRender = false;
+		$this->layout = 'ajax';
+
+		$this->render('/elements/new-schedule');
 	}
 }

@@ -33,3 +33,12 @@ body {
 .hidden {
 	opacity:0;
 }
+
+#close {
+	color:$grey4;
+
+	&:hover {
+		color:$grey2;
+		cursor:pointer;
+	}
+}

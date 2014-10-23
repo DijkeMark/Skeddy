@@ -3,22 +3,24 @@ App::uses('AppModel', 'Model');
 /**
  * TimeScheduleItem Model
  *
- * @property Employer $Employer
  * @property Note $Note
+ * @property Employer $Employer
  */
 class TimeScheduleItem extends AppModel {
-
-	public $belongsTo = array(
-		'Employer' => array(
-			'className' => 'Employer',
-			'foreignKey' => 'employer_id'
-		)
-	);
 
 	public $hasMany = array(
 		'Note' => array(
 			'className' => 'Note',
 			'foreignKey' => 'time_schedule_item_id'
+		)
+	);
+
+	public $hasAndBelongsToMany = array(
+		'Employer' => array(
+			'className' => 'Employer',
+			'joinTable' => 'employers_time_schedule_items',
+			'foreignKey' => 'time_schedule_item_id',
+			'associationForeignKey' => 'employer_id'
 		)
 	);
 
@@ -39,10 +41,6 @@ class TimeScheduleItem extends AppModel {
 						)
 					)
 				)
-			),
-			'fields' => array(
-				'id',
-				'date'
 			),
 			'conditions' => array(
 				'date >=' => $startDayOfWeek,

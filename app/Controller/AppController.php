@@ -107,7 +107,7 @@ class AppController extends Controller {
                 }
             }
 
-            if($goToSettings)
+            if($goToSettings && $this->Auth->loggedIn())
             {
                 $this->redirect(array('controller' => 'employers', 'action' => 'settings'));
             }
