@@ -115,14 +115,22 @@
 						height:960px;
 						background:$purple;
 						overflow:hidden;
+						position:relative;
 						@include border-radius(5px);
-					}
 
-					.roster-item {
-						width:50%;
-
-						.profile-photo {
+						.schedule-item {
 							width:100%;
+							position:absolute;
+							left:0px;
+							overflow:hidden;
+							background:$blue;
+							border:1px solid $blue2;
+							@include border-radius(5px);
+
+							.schedule-name {
+								padding:5px 10px 5px 10px;
+								font-size:12px;
+							}
 						}
 					}
 				}

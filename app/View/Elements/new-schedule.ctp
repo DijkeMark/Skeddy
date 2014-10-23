@@ -30,7 +30,7 @@
 		    )
 		));
 		echo '<div class="clear"></div>';
-		echo $this->Form->input('end_time', array(
+		echo $this->Form->input('end_hour', array(
 		    'options' => $hours,
 		    'empty' => 'Hour',
 		    'label' => 'End Time',

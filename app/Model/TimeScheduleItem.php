@@ -45,7 +45,8 @@ class TimeScheduleItem extends AppModel {
 			'conditions' => array(
 				'date >=' => $startDayOfWeek,
 				'date <=' => $endDayOfWeek
-			)
+			),
+			'order' => array('TimeScheduleItem.date', 'TimeScheduleItem.start_hour ASC', 'TimeScheduleItem.start_minute ASC'),
 		));
 
 		return $results;

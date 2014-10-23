@@ -117,6 +117,8 @@ Scheduler.prototype.SetupDragAndDropHandlers = function()
 
 					form = $("#TimeScheduleItemLoadNewScheduleElementForm").serialize();
 					self.schedule.AddToSchedule(employerId, form);
+
+					$('#add-to-schedule').remove();
 				});
 			});
 		}

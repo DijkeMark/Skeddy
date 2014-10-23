@@ -63,8 +63,6 @@ WeeklySchedule.prototype.SetupScheduleDate = function()
 
 	$('#topbar #date').html(monthYear);
 
-	$('.day-schedule').empty();
-
 	this.SetSidebarActives();
 }
 
@@ -157,7 +155,7 @@ WeeklySchedule.prototype.AddToSchedule = function(employerId, form)
 		{
 			if(jsonData.ScheduleItems.length > 0)
 			{
-				//self.FillSchedule(jsonData);
+				self.FillSchedule(jsonData);
 			}
 		}
 	});
@@ -165,22 +163,48 @@ WeeklySchedule.prototype.AddToSchedule = function(employerId, form)
 
 WeeklySchedule.prototype.FillSchedule = function(jsonData)
 {
+	$('.day-schedule').empty();
+
 	for(var i = 0; i < jsonData.ScheduleItems.length; i++)
 	{
 		var item = jsonData.ScheduleItems[i];
 		var itemId = item['TimeScheduleItem']['id'];
+		var name = item['TimeScheduleItem']['name'];
 		var date = item['TimeScheduleItem']['date'];
-		var employerId = item['Employer']['id'];
-		var profilePhoto = item['Employer']['profile_photo'];
+		var profilePhoto = item['Employer'][0]['profile_photo'];
+		var startHour = parseInt(item['TimeScheduleItem']['start_hour']);
+		var startMinute = parseInt(item['TimeScheduleItem']['start_minute']);
+		var endHour = parseInt(item['TimeScheduleItem']['end_hour']);
+		var endMinute = parseInt(item['TimeScheduleItem']['end_minute']);
 
-		if($('.roster-item#ri' + itemId).length == 0)
+		var hourHeight = 40;
+		var maxWidth = parseInt($('.day-schedule').css('width')) - 2;
+
+		if($('.schedule-item#si' + itemId).length == 0)
 		{
-			$('.day .day-indicator#' + date).siblings('.day-schedule').find('.clear').remove();
+			var startPos = (startHour + (startMinute / 60)) * hourHeight;
+			var itemHeight = ((endHour + (endMinute / 60)) * hourHeight) - startPos;
+			$('.day .day-indicator#' + date).siblings('.day-schedule').append('<div class="schedule-item left" id="si' + itemId + '"></div>');
+			$('.schedule-item#si' + itemId).css(
+			{
+				width:maxWidth,
+				height:itemHeight,
+				top:startPos
+			});
 
-			$('.day .day-indicator#' + date).siblings('.day-schedule').append('<div class="roster-item left" id="ri' + itemId + '"></div>');
-			$('.roster-item#ri' + itemId).append('<img class="profile-photo" id="' + employerId + '" alt="" src="/img/' + profilePhoto + '">');
+			if(startHour == 0)
+				startHour = '0' + startHour;
 
-			$('.day .day-indicator#' + date).siblings('.day-schedule').append('<div class="clear"></div>');
+			if(startMinute == 0)
+				startMinute = '0' + startMinute;
+
+			if(endHour == 0)
+				endHour = '0' + endHour;
+
+			if(endMinute == 0)
+				endMinute = '0' + endMinute;
+
+			$('.schedule-item#si' + itemId).append('<div class="schedule-name">' + name + ' (' + startHour + ':' + startMinute + ' - ' + endHour + ':' + endMinute + ')</div>');
 		}
 	}
 }
