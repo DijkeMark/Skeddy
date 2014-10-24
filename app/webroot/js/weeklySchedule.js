@@ -165,6 +165,8 @@ WeeklySchedule.prototype.FillSchedule = function(jsonData)
 {
 	$('.day-schedule').empty();
 
+	var previousItems = Array();
+
 	for(var i = 0; i < jsonData.ScheduleItems.length; i++)
 	{
 		var item = jsonData.ScheduleItems[i];
@@ -185,6 +187,25 @@ WeeklySchedule.prototype.FillSchedule = function(jsonData)
 			var startPos = (startHour + (startMinute / 60)) * hourHeight;
 			var itemHeight = ((endHour + (endMinute / 60)) * hourHeight) - startPos;
 			$('.day .day-indicator#' + date).siblings('.day-schedule').append('<div class="schedule-item left" id="si' + itemId + '"></div>');
+
+			var correctStartHour = startHour;
+			var correctedStartMinute = startMinute;
+			var correctEndHour = endHour;
+			var correctedEndMinute = endMinute;
+
+			if(correctStartHour == 0)
+				correctStartHour = '0' + correctStartHour;
+
+			if(correctedStartMinute == 0)
+				correctedStartMinute = '0' + correctedStartMinute;
+
+			if(correctEndHour == 0)
+				correctEndHour = '0' + correctEndHour;
+
+			if(correctedEndMinute == 0)
+				correctedEndMinute = '0' + correctedEndMinute;
+
+			$('.schedule-item#si' + itemId).append('<div class="schedule-name">' + name + ' (' + correctStartHour + ':' + correctedStartMinute + ' - ' + correctEndHour + ':' + correctedEndMinute + ')</div>');
 			$('.schedule-item#si' + itemId).css(
 			{
 				width:maxWidth,
@@ -192,20 +213,36 @@ WeeklySchedule.prototype.FillSchedule = function(jsonData)
 				top:startPos
 			});
 
-			if(startHour == 0)
-				startHour = '0' + startHour;
+			if(previousItems.length > 0)
+			{
+				if(previousItems[previousItems.length - 1]['TimeScheduleItem']['date'] != date)
+				{
+					previousItems.length = 0;
+				}
+			}
 
-			if(startMinute == 0)
-				startMinute = '0' + startMinute;
+			for(var a = 0; a < previousItems.length; a++)
+			{
+				console.log(previousItems[a]);
+				var previousItemId = previousItems[a]['TimeScheduleItem']['id'];
 
-			if(endHour == 0)
-				endHour = '0' + endHour;
+				var div1 = $('.schedule-item#si' + itemId);
+				var div2 = $('.schedule-item#si' + previousItemId);
 
-			if(endMinute == 0)
-				endMinute = '0' + endMinute;
-
-			$('.schedule-item#si' + itemId).append('<div class="schedule-name">' + name + ' (' + startHour + ':' + startMinute + ' - ' + endHour + ':' + endMinute + ')</div>');
+				if(collisionHelper.CheckForOverlaps(div1, div2))
+				{
+					var extraLeft = 20;
+					var left = parseInt($('.schedule-item#si' + previousItemId).css('left'));
+					$('.schedule-item#si' + itemId).css(
+					{
+						width:maxWidth - (left + extraLeft),
+						left:left + extraLeft
+					});
+				}
+			}
 		}
+
+		previousItems.push(item);
 	}
 }
 
