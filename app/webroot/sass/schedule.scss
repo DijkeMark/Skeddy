@@ -380,4 +380,53 @@
 #settings-container {
 	margin:0px auto 0px auto;
 	width:800px;
+
+	#profile-picture {
+		width:200px;
+		height:200px;
+		text-align:center;
+		text-transform:uppercase;
+		overflow:hidden;
+		position:relative;
+		border:1px solid $grey1;
+
+		#drop-container {
+			padding-top:70px;
+			width:200px;
+			height:130px;
+			background:rgba(0, 0, 0, 0.5);
+			color:white;
+			opacity:0;
+
+			&:hover {
+				opacity:1;
+			}
+
+			span {
+				margin:10px auto 0px auto;
+				padding:12px 26px 12px 26px;
+				font-size:14px;
+				color:$grey2;
+				display:inline-block;
+				background:$blue;
+
+				&:hover {
+					cursor:pointer;
+				}
+			}
+		}
+
+		input[type=file] {
+			display:none;
+		}
+
+		#profile-photo {
+			width:200px;
+			height:200px;
+			position:absolute;
+			top:0px;
+			left:0px;
+			z-index:-1;
+		}
+	}
 }

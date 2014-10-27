@@ -6,6 +6,7 @@ $(document).ready(function()
 function Company()
 {
 	this.SetupClickHandlers();
+	this.SetupDragAndDropHandlers();
 }
 
 Company.prototype.SetupClickHandlers = function()
@@ -58,4 +59,32 @@ Company.prototype.ProcessInvitations = function(jsonData)
 			}
 		}
 	}
+}
+
+Company.prototype.SetupDragAndDropHandlers = function(jsonData)
+{
+	$('#EmployerSetProfilePictureForm #drop-container span').on('click', function(event)
+	{
+		$('#EmployerUpload-field').click();
+    });
+
+    $('#EmployerSetProfilePictureForm').fileupload(
+    {
+    	dropZone: $('#drop-container'),
+    	add: function (e, data)
+    	{
+            var jqXHR = data.submit();
+            console.log(jqXHR);
+            jqXHR.success(function()
+            {
+            	var jsonData = $.parseJSON(jqXHR.responseText);
+            	$('#profile-picture #profile-photo').attr('src', '/img/employers/' + jsonData.profile_photo);
+            });
+        },
+    });
+
+    $(document).on('drop dragover', function(event)
+    {
+        event.preventDefault();
+    });
 }

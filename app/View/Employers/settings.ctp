@@ -1,3 +1,6 @@
+<?php
+	echo $this->html->script(array('companies', 'fileUpload'), array('inline' => false));
+?>
 <div id='settings-container'>
 	<h1>Settings</h1>
 	<?php
@@ -19,6 +22,19 @@
 		echo $this->Form->hidden('id');
 		echo $this->Form->hidden('registration_complete', array('value' => 1));
 		echo $this->Form->submit();
+		echo $this->Form->end();
+
+		echo $this->Form->create('Employer', array('action' => 'setProfilePicture', 'type' => 'file'));
+		?>
+		<div id='profile-picture'>
+			<div id='drop-container'>
+				<?php echo $this->Form->input('upload-field', array('type' => 'file', 'div' => false, 'label' => false)); ?>
+				Drop Image Here
+				<span>Browse</span>
+			</div>
+			<?php echo $this->Html->image('employers/'.$this->Session->read('Auth.User.profile_photo'), array('alt' => '', 'id' => 'profile-photo')); ?>
+		</div>
+		<?php
 		echo $this->Form->end();
 	?>
 </div>

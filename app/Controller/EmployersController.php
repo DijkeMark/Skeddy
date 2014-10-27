@@ -63,6 +63,50 @@ class EmployersController extends AppController {
 	    }
 	}
 
+	public function setProfilePicture()
+	{
+		$this->autoRender = false;
+		$this->layout = 'ajax';
+
+		$picture = $this->request->data['Employer']['upload-field'];
+		$allowedFormats = array(
+			'image/jpeg' => 'jpg',
+			'image/png' => 'png'
+		);
+
+		if($picture['error'] == 0 && array_key_exists($picture['type'], $allowedFormats))
+	    {
+	    	$employerId = $this->getEmployerId();
+
+	    	$file = new File($picture['tmp_name']);
+
+	    	if($file->exists())
+	    	{
+	    		$fileNameOnServer = md5($picture['name']).time().'.'.$allowedFormats[$picture['type']];
+
+				$dir = new Folder('img/employers', true);
+				if($file->copy($dir->path.DS.$fileNameOnServer))
+				{
+					$oldFile = new File($dir->path.DS.$this->Session->read('Auth.User.profile_photo'));
+
+					if($oldFile->delete())
+					{
+						$data['Employer']['id'] = $employerId;
+						$data['Employer']['profile_photo'] = $fileNameOnServer;
+
+						if($this->Employer->save($data))
+						{
+							$this->Session->write('Auth.User.profile_photo', $fileNameOnServer);
+						}
+					}
+				}
+			}
+	    }
+
+	    $jsonData['profile_photo'] = $this->Session->read('Auth.User.profile_photo');
+	    echo json_encode($jsonData);
+	}
+
 	public function registration($invitationCode)
 	{
 		$this->layout = 'settings';

@@ -16,7 +16,7 @@ if(isset($teamMembers))
 	?>
 		<div class='team-member' id='<?php echo $teamMembers[$i]['Employer']['id']; ?>'>
 			<div class='profile-icon left'>
-				<?php echo $this->Html->image($teamMembers[$i]['Employer']['profile_photo'], array('alt' => '', 'class' => 'profile-photo')); ?>
+				<?php echo $this->Html->image('employers/'.$teamMembers[$i]['Employer']['profile_photo'], array('alt' => '', 'class' => 'profile-photo')); ?>
 			</div>
 			<div class='info'>
 				<div class='name'>
