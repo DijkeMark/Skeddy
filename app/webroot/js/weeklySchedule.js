@@ -10,6 +10,9 @@ WeeklySchedule.prototype.SetupScheduleDate = function()
 {
 	var daysInWeek = new Array();
 	var todayInWeek = false;
+
+	$('.day-schedule').empty();
+	
 	for(var i = 0; i < 7; i++)
 	{
 		daysInWeek[i] = this.GetDayOfWeek(i, this.weekOffset);
@@ -163,8 +166,6 @@ WeeklySchedule.prototype.AddToSchedule = function(employerId, form)
 
 WeeklySchedule.prototype.FillSchedule = function(jsonData)
 {
-	$('.day-schedule').empty();
-
 	var previousItems = Array();
 
 	for(var i = 0; i < jsonData.ScheduleItems.length; i++)
@@ -223,7 +224,6 @@ WeeklySchedule.prototype.FillSchedule = function(jsonData)
 
 			for(var a = 0; a < previousItems.length; a++)
 			{
-				console.log(previousItems[a]);
 				var previousItemId = previousItems[a]['TimeScheduleItem']['id'];
 
 				var div1 = $('.schedule-item#si' + itemId);
