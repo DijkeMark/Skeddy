@@ -1,5 +1,5 @@
 <?php
-	$this->html->script(array('companies'), array('inline' => false));
+	echo $this->html->script(array('companies', 'fileUpload'), array('inline' => false));
 ?>
 <div id='settings-container'>
 	<h1>Invitations</h1>
