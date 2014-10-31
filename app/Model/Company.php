@@ -13,8 +13,8 @@ class Company extends AppModel {
 			'className' => 'InvitedEmployer',
 			'foreignKey' => 'company_id'
 		),
-		'Job' => array(
-			'className' => 'Job',
+		'JobDescription' => array(
+			'className' => 'JobDescription',
 			'foreignKey' => 'company_id'
 		)
 	);

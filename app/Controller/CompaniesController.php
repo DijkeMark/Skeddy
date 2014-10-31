@@ -1,10 +1,148 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 App::uses('CakeEmail', 'Network/Email');
 
 class CompaniesController extends AppController {
 
-	public $uses = array('InvitedEmployer', 'Employer', 'Company');
+	public $uses = array('InvitedEmployer', 'Employer', 'Company', 'Job', 'JobDescription', 'Role');
+
+	public function beforeFilter()
+	{
+		parent::beforeFilter();
+
+		$this->Auth->allow('registration');
+	}
+
+	public function registration()
+	{
+		if($this->request->is('post'))
+	    {
+	    	$this->autoRender = false;
+	    	$this->layout = 'ajax';
+
+	    	$jsonData['errors'] = array();
+
+	    	debug($this->request->data);
+	    	$this->registerCompany($jsonData, $this->request->data['Company']);
+	    }
+	    else
+	    {
+	    	$this->layout = 'settings';
+	    }
+	}
+
+	private function registerCompany($jsonData, $company)
+	{
+		debug('registering company');
+		$existingCompaniesWithEmail = $this->Company->findAllByEmail($company['email']);
+
+		if(count($existingCompaniesWithEmail) == 0)
+		{
+			if($this->Company->save($company))
+			{
+				$jsonData['companyId'] = $this->Company->getLastInsertID();
+				$this->registerDirector($jsonData, $this->request->data['Employer']);
+			}
+			else
+			{
+				array_push($jsonData['errors'], 'An error occured while processing your company registration. Please try again.');
+			}
+		}
+		else
+		{
+			array_push($jsonData['errors'], 'Your company email is already in use. Please enter another email.');
+		}
+
+		if(count($jsonData['errors']) > 0)
+		{
+			echo json_encode($jsonData);
+		}
+	}
+
+	private function registerDirector($jsonData, $user)
+	{
+		debug('registering director');
+		$existingUserWithEmail = $this->Employer->findAllByEmail($user['email']);
+
+		if(count($existingUserWithEmail) == 0)
+		{
+			if($user['password'] == $user['retype-password'])
+			{
+				Security::setHash('blowfish');
+				$user['password'] = Security::hash($user['password']);
+				if($this->Employer->save($user))
+				{
+					$jsonData['userId'] = $this->Employer->getLastInsertID();
+					$this->createDirectorsJob($jsonData);
+				}
+				else
+				{
+					$this->Company->delete($jsonData['companyId']);
+					array_push($jsonData['errors'], 'An error occured while processing your company registration. Please try again.');
+				}
+			}
+			else
+			{
+				array_push($jsonData['errors'], 'Your passwords are not the same.');
+			}
+		}
+		else
+		{
+			array_push($jsonData['errors'], 'Your email is already in use. Please enter another email.');
+		}
+
+		if(count($jsonData['errors']) > 0)
+		{
+			echo json_encode($jsonData);
+		}
+	}
+
+	private function createDirectorsJob($jsonData)
+	{
+		debug('createDirectorsJob');
+		$directorRoleId = $this->Role->findByRights(1)['Role']['id'];
+		
+		$jobDescription['JobDescription']['name'] = 'Director';
+		$jobDescription['JobDescription']['company_id'] = $jsonData['companyId'];
+
+		if($this->JobDescription->save($jobDescription))
+		{
+			$jobDescriptionId = $this->JobDescription->getLastInsertID();
+
+			$job['Job']['employer_id'] = $jsonData['userId'];
+			$job['Job']['job_description_id'] = $jobDescriptionId;
+			$job['Job']['role_id'] = $directorRoleId;
+
+			if($this->Job->save($job))
+			{
+				$this->companyRegistrationComplete($jsonData);
+			}
+			else
+			{
+				$this->Company->delete($jsonData['companyId']);
+				$this->Employer->delete($jsonData['userId']);
+				$this->JobDescription->delete($jobDescriptionId);
+				array_push($jsonData['errors'], 'An error occured while processing your company registration. Please try again.');
+			}
+		}
+		else
+		{
+			$this->Company->delete($jsonData['companyId']);
+			$this->Employer->delete($jsonData['userId']);
+			array_push($jsonData['errors'], 'An error occured while processing your company registration. Please try again.');
+		}
+
+		if(count($jsonData['errors']) > 0)
+		{
+			echo json_encode($jsonData);
+		}
+	}
+
+	private function companyRegistrationComplete($jsonData)
+	{
+		debug('companyRegistrationComplete');
+	}
 
 	public function invite()
 	{

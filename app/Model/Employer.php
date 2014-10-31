@@ -8,13 +8,14 @@ App::uses('AppModel', 'Model');
  */
 class Employer extends AppModel {
 
-	public $hasAndBelongsToMany = array(
+	public $hasMany = array(
 		'Job' => array(
 			'className' => 'Job',
-			'joinTable' => 'employers_jobs',
-			'foreignKey' => 'employer_id',
-			'associationForeignKey' => 'job_id'
-		),
+			'foreignKey' => 'employer_id'
+		)
+	);
+
+	public $hasAndBelongsToMany = array(
 		'TimeScheduleItem' => array(
 			'className' => 'TimeScheduleItem',
 			'joinTable' => 'employers_time_schedule_items',
@@ -22,4 +23,5 @@ class Employer extends AppModel {
 			'associationForeignKey' => 'time_schedule_item_id'
 		)
 	);
+
 }
