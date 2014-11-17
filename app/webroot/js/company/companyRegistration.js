@@ -1,6 +1,7 @@
 $(document).ready(function()
 {
 	company = new Company();
+	$('#registration-complete').hide(0);
 });
 
 function Company()
@@ -34,8 +35,13 @@ Company.prototype.SetupClickHandlers = function()
 
 Company.prototype.ProcessRegistration = function(jsonData)
 {
-	if(jsonData.Error != null)
+	if(jsonData.errors.length > 0)
 	{
-		$('#error').hide(0).html(jsonData.Error).show(500);
+		$('#error').hide(0).html(jsonData.errors).show(500);
+	}
+	else
+	{
+		$('#company-registration').hide(0);
+		$('#registration-complete').show(0);
 	}
 }

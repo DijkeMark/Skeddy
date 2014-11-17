@@ -21,9 +21,7 @@ class CompaniesController extends AppController {
 	    	$this->autoRender = false;
 	    	$this->layout = 'ajax';
 
-	    	$jsonData['errors'] = array();
-
-	    	debug($this->request->data);
+	    	$jsonData['response']['errors'] = array();
 	    	$this->registerCompany($jsonData, $this->request->data['Company']);
 	    }
 	    else
@@ -34,7 +32,6 @@ class CompaniesController extends AppController {
 
 	private function registerCompany($jsonData, $company)
 	{
-		debug('registering company');
 		$existingCompaniesWithEmail = $this->Company->findAllByEmail($company['email']);
 
 		if(count($existingCompaniesWithEmail) == 0)
@@ -46,23 +43,22 @@ class CompaniesController extends AppController {
 			}
 			else
 			{
-				array_push($jsonData['errors'], 'An error occured while processing your company registration. Please try again.');
+				array_push($jsonData['response']['errors'], 'An error occured while processing your company registration. Please try again.');
 			}
 		}
 		else
 		{
-			array_push($jsonData['errors'], 'Your company email is already in use. Please enter another email.');
+			array_push($jsonData['response']['errors'], 'Your company email is already in use. Please enter another email.');
 		}
 
-		if(count($jsonData['errors']) > 0)
+		if(count($jsonData['response']['errors']) > 0)
 		{
-			echo json_encode($jsonData);
+			echo json_encode($jsonData['response']);
 		}
 	}
 
 	private function registerDirector($jsonData, $user)
 	{
-		debug('registering director');
 		$existingUserWithEmail = $this->Employer->findAllByEmail($user['email']);
 
 		if(count($existingUserWithEmail) == 0)
@@ -79,28 +75,27 @@ class CompaniesController extends AppController {
 				else
 				{
 					$this->Company->delete($jsonData['companyId']);
-					array_push($jsonData['errors'], 'An error occured while processing your company registration. Please try again.');
+					array_push($jsonData['response']['errors'], 'An error occured while processing your company registration. Please try again.');
 				}
 			}
 			else
 			{
-				array_push($jsonData['errors'], 'Your passwords are not the same.');
+				array_push($jsonData['response']['errors'], 'Your passwords are not the same.');
 			}
 		}
 		else
 		{
-			array_push($jsonData['errors'], 'Your email is already in use. Please enter another email.');
+			array_push($jsonData['response']['errors'], 'Your email is already in use. Please enter another email.');
 		}
 
-		if(count($jsonData['errors']) > 0)
+		if(count($jsonData['response']['errors']) > 0)
 		{
-			echo json_encode($jsonData);
+			echo json_encode($jsonData['response']);
 		}
 	}
 
 	private function createDirectorsJob($jsonData)
 	{
-		debug('createDirectorsJob');
 		$directorRoleId = $this->Role->findByRights(1)['Role']['id'];
 		
 		$jobDescription['JobDescription']['name'] = 'Director';
@@ -123,25 +118,37 @@ class CompaniesController extends AppController {
 				$this->Company->delete($jsonData['companyId']);
 				$this->Employer->delete($jsonData['userId']);
 				$this->JobDescription->delete($jobDescriptionId);
-				array_push($jsonData['errors'], 'An error occured while processing your company registration. Please try again.');
+				array_push($jsonData['response']['errors'], 'An error occured while processing your company registration. Please try again.');
 			}
 		}
 		else
 		{
 			$this->Company->delete($jsonData['companyId']);
 			$this->Employer->delete($jsonData['userId']);
-			array_push($jsonData['errors'], 'An error occured while processing your company registration. Please try again.');
+			array_push($jsonData['response']['errors'], 'An error occured while processing your company registration. Please try again.');
 		}
 
-		if(count($jsonData['errors']) > 0)
+		if(count($jsonData['response']['errors']) > 0)
 		{
-			echo json_encode($jsonData);
+			echo json_encode($jsonData['response']);
 		}
 	}
 
 	private function companyRegistrationComplete($jsonData)
 	{
-		debug('companyRegistrationComplete');
+		$email = new CakeEmail('mandrill');
+    	$email->template('CompanyRegistration');
+    	$email->to($this->request->data['Employer']['email']);
+    	$email->subject('Skeddy Company Registration');
+    	$email->viewVars(array(
+    		'email' => $this->request->data['Employer']['email'],
+    		'password' => $this->request->data['Employer']['password']
+    	));
+
+    	if($email->send()[0]['status'] == 'sent')
+    	{
+    		echo json_encode($jsonData['response']);
+    	}
 	}
 
 	public function invite()
